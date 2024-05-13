@@ -59,7 +59,7 @@ function createConvexGeom(object) {
 class AmmoHelper {
 
   static Init(callback = () => { }) {
-    _Ammo.default().then((ammo) => {
+    _Ammo.default.call(this).then((ammo) => {
       Ammo = ammo;
       callback();
     });
