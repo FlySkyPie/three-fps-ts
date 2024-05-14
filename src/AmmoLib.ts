@@ -64,7 +64,7 @@ class AmmoHelper {
     });
   }
 
-  static CreateTrigger(shape: any, position: any, rotation: any) {
+  static CreateTrigger(shape: any, position?: any, rotation?: any) {
     const transform = new Ammo.btTransform();
     transform.setIdentity();
     position &&

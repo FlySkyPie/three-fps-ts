@@ -1,4 +1,4 @@
-export default class Component {
+export default abstract class Component {
   parent: any;
 
   constructor() {
