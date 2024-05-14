@@ -21,14 +21,14 @@ In terminal clone the project into a directory of your choice then delete the gi
 git clone --depth=1 https://github.com/mohsenheydari/three-fps.git three-fps
 cd three-fps
 rm -rf .git
-npm install
+pnpm install
 ```
 
 ## Running the development server
 To see the changes you make to the project go to the project's folder in terminal and type...
 
 ```bash
-npm start
+pnpm run dev
 ```
 
 This command will bundle the project code and start a development server at [http://localhost:8080/](http://localhost:8080/). Visit this in your web browser.
