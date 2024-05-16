@@ -1,8 +1,9 @@
+// import "ammojs-typed";
 import * as _Ammo from "ammo.js";
 import * as THREE from "three";
 import { ConvexHull } from "three/examples/jsm/math/ConvexHull";
 
-let Ammo: any = null;
+let AmmoInstance: _Ammo.IAmmo = null as any;
 let rayOrigin: any = null;
 let rayDest: any = null;
 let closestRayResultCallback: any = null;
@@ -21,8 +22,8 @@ const CollisionFilterGroups = {
 function createConvexHullShape(object: any) {
   const geometry = createConvexGeom(object);
   let coords = geometry.attributes.position.array;
-  let tempVec = new Ammo.btVector3(0, 0, 0);
-  let shape = new Ammo.btConvexHullShape();
+  let tempVec = new AmmoInstance!.btVector3(0, 0, 0);
+  let shape = new AmmoInstance!.btConvexHullShape();
   for (let i = 0, il = coords.length; i < il; i += 3) {
     tempVec.setValue(coords[i], coords[i + 1], coords[i + 2]);
     let lastOne = i >= il - 3;
@@ -59,24 +60,29 @@ function createConvexGeom(object: any) {
 class AmmoHelper {
   static Init(callback = () => {}) {
     _Ammo.default.call(this).then((ammo: any) => {
-      Ammo = ammo;
+      AmmoInstance = ammo;
       callback();
     });
   }
 
   static CreateTrigger(shape: any, position?: any, rotation?: any) {
-    const transform = new Ammo.btTransform();
+    const transform = new AmmoInstance!.btTransform();
     transform.setIdentity();
     position &&
       transform.setOrigin(
-        new Ammo.btVector3(position.x, position.y, position.z)
+        new AmmoInstance!.btVector3(position.x, position.y, position.z)
       );
     rotation &&
       transform.setRotation(
-        new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w)
+        new AmmoInstance!.btQuaternion(
+          rotation.x,
+          rotation.y,
+          rotation.z,
+          rotation.w
+        )
       );
 
-    const ghostObj = new Ammo.btPairCachingGhostObject();
+    const ghostObj = new AmmoInstance!.btPairCachingGhostObject();
     ghostObj.setCollisionShape(shape);
     ghostObj.setCollisionFlags(CollisionFlags.CF_NO_CONTACT_RESPONSE);
     ghostObj.setWorldTransform(transform);
@@ -86,9 +92,9 @@ class AmmoHelper {
 
   static IsTriggerOverlapping(ghostObj: any, rigidBody: any) {
     for (let i = 0; i < ghostObj.getNumOverlappingObjects(); i++) {
-      const body = Ammo.castObject(
+      const body = AmmoInstance!.castObject(
         ghostObj.getOverlappingObject(i),
-        Ammo.btRigidBody
+        AmmoInstance!.btRigidBody
       );
       if (body == rigidBody) {
         return true;
@@ -106,18 +112,18 @@ class AmmoHelper {
     collisionFilterMask = CollisionFilterGroups.AllFilter
   ) {
     if (!rayOrigin) {
-      rayOrigin = new Ammo.btVector3();
-      rayDest = new Ammo.btVector3();
-      closestRayResultCallback = new Ammo.ClosestRayResultCallback(
+      rayOrigin = new AmmoInstance!.btVector3();
+      rayDest = new AmmoInstance!.btVector3();
+      closestRayResultCallback = new AmmoInstance!.ClosestRayResultCallback(
         rayOrigin,
         rayDest
       );
     }
 
     // Reset closestRayResultCallback to reuse it
-    const rayCallBack = Ammo.castObject(
+    const rayCallBack = AmmoInstance!.castObject(
       closestRayResultCallback,
-      Ammo.RayResultCallback
+      AmmoInstance!.RayResultCallback
     );
     rayCallBack.set_m_closestHitFraction(1);
     rayCallBack.set_m_collisionObject(null);
@@ -158,7 +164,7 @@ class AmmoHelper {
 
 export {
   AmmoHelper,
-  Ammo,
+  AmmoInstance as Ammo,
   createConvexHullShape,
   CollisionFlags,
   CollisionFilterGroups,

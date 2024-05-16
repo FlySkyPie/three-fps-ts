@@ -12,7 +12,7 @@ export default class EntityManager {
     return this.entities.find((el) => el.Name === name);
   }
 
-  Add(entity: any) {
+  public Add(entity: any) {
     if (!entity.Name) {
       entity.SetName(this.ids);
     }
@@ -22,7 +22,7 @@ export default class EntityManager {
     this.entities.push(entity);
   }
 
-  EndSetup() {
+  public EndSetup() {
     for (const ent of this.entities) {
       for (const key in ent.components) {
         ent.components[key].Initialize();
@@ -30,13 +30,13 @@ export default class EntityManager {
     }
   }
 
-  PhysicsUpdate(world: any, timeStep: any) {
+  public PhysicsUpdate(world: any, timeStep: any) {
     for (const entity of this.entities) {
       entity.PhysicsUpdate(world, timeStep);
     }
   }
 
-  Update(timeElapsed: any) {
+  public Update(timeElapsed: number) {
     for (const entity of this.entities) {
       entity.Update(timeElapsed);
     }

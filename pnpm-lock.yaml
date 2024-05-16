@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@types/ammo.js':
-        specifier: github:osman-turan/ammo.js-typings
-        version: https://codeload.github.com/osman-turan/ammo.js-typings/tar.gz/4270a20c9f992969ffbd3e989aaa0efbe10fd5c4
       ammo.js:
         specifier: kripken/ammo.js
         version: https://codeload.github.com/kripken/ammo.js/tar.gz/1ed8b58c7058a5f697f2642ceef8ee20fdd55e10
@@ -30,6 +27,9 @@ importers:
       '@types/three':
         specifier: ^0.127.0
         version: 0.127.1
+      ammojs-typed:
+        specifier: ^1.0.6
+        version: 1.0.6
       typescript:
         specifier: ^5.2.2
         version: 5.4.5
@@ -257,10 +257,6 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@types/ammo.js@https://codeload.github.com/osman-turan/ammo.js-typings/tar.gz/4270a20c9f992969ffbd3e989aaa0efbe10fd5c4':
-    resolution: {tarball: https://codeload.github.com/osman-turan/ammo.js-typings/tar.gz/4270a20c9f992969ffbd3e989aaa0efbe10fd5c4}
-    version: 1.0.3
-
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
 
@@ -273,6 +269,9 @@ packages:
   ammo.js@https://codeload.github.com/kripken/ammo.js/tar.gz/1ed8b58c7058a5f697f2642ceef8ee20fdd55e10:
     resolution: {tarball: https://codeload.github.com/kripken/ammo.js/tar.gz/1ed8b58c7058a5f697f2642ceef8ee20fdd55e10}
     version: 0.0.2
+
+  ammojs-typed@1.0.6:
+    resolution: {integrity: sha512-ut/tD0m5eEdlJ5KK97ma6SIEGZ4FN3AJTSVz8wl6C4EtnpVQdP70lOwgDMJKsHjTohxc2/xEZl6yJfMBZNlQ5w==}
 
   esbuild@0.20.2:
     resolution: {integrity: sha512-WdOOppmUNU+IbZ0PaDiTst80zjnrOkyJNHoKupIcVyU8Lvla3Ugx94VzkQ32Ijqd7UhHJy75gNWDMUekcrSJ6g==}
@@ -468,8 +467,6 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.17.2':
     optional: true
 
-  '@types/ammo.js@https://codeload.github.com/osman-turan/ammo.js-typings/tar.gz/4270a20c9f992969ffbd3e989aaa0efbe10fd5c4': {}
-
   '@types/estree@1.0.5': {}
 
   '@types/stats.js@0.17.3': {}
@@ -477,6 +474,8 @@ snapshots:
   '@types/three@0.127.1': {}
 
   ammo.js@https://codeload.github.com/kripken/ammo.js/tar.gz/1ed8b58c7058a5f697f2642ceef8ee20fdd55e10: {}
+
+  ammojs-typed@1.0.6: {}
 
   esbuild@0.20.2:
     optionalDependencies:

@@ -6,7 +6,7 @@
  * handles window resizes.
  *
  */
-
+import "ammojs-typed";
 import * as THREE from "three";
 import Stats from "stats.js";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
