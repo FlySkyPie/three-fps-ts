@@ -1,7 +1,9 @@
+import type Entity from "./Entity";
+
 export default class EntityManager {
   ids: number;
 
-  entities: any[];
+  private entities: Entity[];
 
   constructor() {
     this.ids = 0;
@@ -12,7 +14,7 @@ export default class EntityManager {
     return this.entities.find((el) => el.Name === name);
   }
 
-  public Add(entity: any) {
+  public Add(entity: Entity) {
     if (!entity.Name) {
       entity.SetName(this.ids);
     }

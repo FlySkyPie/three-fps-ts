@@ -1,16 +1,21 @@
 import { Vector3, Quaternion } from "three";
 
+import type Component from "./Component";
+
 export default class Entity {
-  name: any;
+  id: number = NaN;
 
-  components: Record<string, any>;
-  position: Vector3;
+  private name: number | string | null;
 
-  rotation: Quaternion;
+  public components: Record<string, any>;
 
-  parent: any;
+  private position: Vector3;
 
-  eventHandlers: Record<string, any>;
+  private rotation: Quaternion;
+
+  private parent: any;
+
+  eventHandlers: Record<string, any[]>;
 
   constructor() {
     this.name = null;
@@ -21,28 +26,28 @@ export default class Entity {
     this.eventHandlers = {};
   }
 
-  AddComponent(component: any) {
+  public AddComponent(component: Component) {
     component.SetParent(this);
     this.components[component.name] = component;
   }
 
-  SetParent(parent: any) {
+  public SetParent(parent: any) {
     this.parent = parent;
   }
 
-  SetName(name: any) {
+  public SetName(name: number | string) {
     this.name = name;
   }
 
-  get Name() {
+  public get Name() {
     return this.name;
   }
 
-  GetComponent(name: any) {
+  GetComponent(name: string) {
     return this.components[name];
   }
 
-  SetPosition(position: any) {
+  public SetPosition(position: Vector3) {
     this.position.copy(position);
   }
 
@@ -50,7 +55,7 @@ export default class Entity {
     return this.position;
   }
 
-  SetRotation(rotation: any) {
+  public SetRotation(rotation: Quaternion) {
     this.rotation.copy(rotation);
   }
 
@@ -80,13 +85,13 @@ export default class Entity {
     }
   }
 
-  PhysicsUpdate(world: any, timeStep: any) {
+  public PhysicsUpdate(world: any, timeStep: any) {
     for (let k in this.components) {
       this.components[k].PhysicsUpdate(world, timeStep);
     }
   }
 
-  Update(timeElapsed: any) {
+  public Update(timeElapsed: number) {
     for (let k in this.components) {
       this.components[k].Update(timeElapsed);
     }

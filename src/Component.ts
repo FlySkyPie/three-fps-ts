@@ -1,4 +1,6 @@
 export default abstract class Component {
+  name: any;
+
   parent: any;
 
   constructor() {

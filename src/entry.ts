@@ -70,7 +70,7 @@ import PlayerHealth from "./entities/Player/PlayerHealth";
 class FPSGameApp {
   lastFrameTime: number | null;
 
-  assets: Record<any, any>;
+  assets: Record<string, any>;
 
   animFrameId: number;
 
