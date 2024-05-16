@@ -40,7 +40,6 @@ class IdleState extends State {
     return this.parent.proxy.animations["idle"];
   }
 
-  //@ts-ignore
   Enter(prevState: any) {
     this.parent.proxy.canMove = false;
     const action = this.Animation.action;
@@ -88,7 +87,6 @@ class PatrolState extends State {
     this.parent.SetState("idle");
   };
 
-  //@ts-ignore
   Enter(prevState: any) {
     this.parent.proxy.canMove = true;
     const action = this.Animation.action;
@@ -158,7 +156,6 @@ class ChaseState extends State {
     action.play();
   }
 
-  //@ts-ignore
   Enter(prevState: any) {
     this.RunToPlayer(prevState);
   }
@@ -205,7 +202,6 @@ class AttackState extends State {
     return this.parent.proxy.animations["attack"];
   }
 
-  //@ts-ignore
   Enter(prevState: any) {
     this.parent.proxy.canMove = false;
     const action = this.Animation.action;
@@ -260,7 +256,6 @@ class DeadState extends State {
     return this.parent.proxy.animations["die"];
   }
 
-  //@ts-ignore
   Enter(prevState: any) {
     const action = this.Animation.action;
     action.setLoop(THREE.LoopOnce, 1);

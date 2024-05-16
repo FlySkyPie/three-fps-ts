@@ -29,7 +29,6 @@ class IdleState extends State {
     return this.parent.proxy.animations["idle"];
   }
 
-  //@ts-ignore
   Enter(prevState: any) {
     const action = this.Animation.action;
 
@@ -43,7 +42,6 @@ class IdleState extends State {
     action.play();
   }
 
-  //@ts-ignore
   Update(t: any) {
     if (this.parent.proxy.shoot && this.parent.proxy.magAmmo > 0) {
       this.parent.SetState("shoot");
@@ -63,7 +61,6 @@ class ShootState extends State {
     return this.parent.proxy.animations["shoot"];
   }
 
-  //@ts-ignore
   Enter(prevState: any) {
     const action = this.Animation.action;
 
@@ -78,7 +75,6 @@ class ShootState extends State {
     action.play();
   }
 
-  //@ts-ignore
   Update(t: any) {
     if (!this.parent.proxy.shoot || this.parent.proxy.magAmmo == 0) {
       this.parent.SetState("idle");
@@ -112,7 +108,6 @@ class ReloadState extends State {
     this.parent.SetState("idle");
   };
 
-  //@ts-ignore
   Enter(prevState: any) {
     const action = this.Animation.action;
     action.loop = THREE.LoopOnce;

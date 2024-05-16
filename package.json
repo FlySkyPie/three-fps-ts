@@ -11,10 +11,12 @@
   "dependencies": {
     "@types/ammo.js": "github:osman-turan/ammo.js-typings",
     "ammo.js": "kripken/ammo.js",
+    "stats.js": "^0.17.0",
     "three": "^0.127.0",
     "three-pathfinding": "^0.14.1"
   },
   "devDependencies": {
+    "@types/stats.js": "^0.17.3",
     "@types/three": "^0.127.0",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"

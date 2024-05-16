@@ -1,6 +1,13 @@
+type IEvent = {
+  element: HTMLElement | Document;
+  type: string;
+  callback: (...arg: any[]) => void;
+};
+
 class Input {
-  _keyMap: any;
-  events: any[];
+  private _keyMap: Record<string, number>;
+
+  private events: IEvent[];
 
   constructor() {
     this._keyMap = {};
@@ -10,48 +17,52 @@ class Input {
     this.AddKeyUpListner(this._onKeyUp);
   }
 
-  _addEventListner(element: any, type: any, callback: any) {
+  private _addEventListner(
+    element: HTMLElement | Document,
+    type: string,
+    callback: (...arg: any[]) => void
+  ) {
     element.addEventListener(type, callback);
     this.events.push({ element, type, callback });
   }
 
-  AddKeyDownListner(callback: any) {
+  public AddKeyDownListner(callback: any) {
     this._addEventListner(document, "keydown", callback);
   }
 
-  AddKeyUpListner(callback: any) {
+  public AddKeyUpListner(callback: any) {
     this._addEventListner(document, "keyup", callback);
   }
 
-  AddMouseMoveListner(callback: any) {
+  public AddMouseMoveListner(callback: any) {
     this._addEventListner(document, "mousemove", callback);
   }
 
-  AddClickListner(callback: any) {
+  public AddClickListner(callback: any) {
     this._addEventListner(document.body, "click", callback);
   }
 
-  AddMouseDownListner(callback: any) {
+  public AddMouseDownListner(callback: any) {
     this._addEventListner(document.body, "mousedown", callback);
   }
 
-  AddMouseUpListner(callback: any) {
+  public AddMouseUpListner(callback: any) {
     this._addEventListner(document.body, "mouseup", callback);
   }
 
-  _onKeyDown = (event: any) => {
+  private _onKeyDown = (event: any) => {
     this._keyMap[event.code] = 1;
   };
 
-  _onKeyUp = (event: any) => {
+  private _onKeyUp = (event: any) => {
     this._keyMap[event.code] = 0;
   };
 
-  GetKeyDown(code: any) {
+  public GetKeyDown(code: any) {
     return this._keyMap[code] === undefined ? 0 : this._keyMap[code];
   }
 
-  ClearEventListners() {
+  public ClearEventListners() {
     this.events.forEach((e) => {
       e.element.removeEventListener(e.type, e.callback);
     });

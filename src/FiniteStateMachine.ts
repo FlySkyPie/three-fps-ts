@@ -1,14 +1,14 @@
 class FiniteStateMachine {
-  states: Record<string, any>;
+  states: Record<string, State>;
 
-  currentState: any;
+  currentState: State | null;
 
   constructor() {
     this.states = {};
     this.currentState = null;
   }
 
-  AddState(name: any, instance: any) {
+  public AddState(name: string, instance: State) {
     this.states[name] = instance;
   }
 
@@ -31,16 +31,22 @@ class FiniteStateMachine {
   }
 }
 
-class State {
+abstract class State {
   //   parent: any;
 
   constructor(public parent: any) {
     // this.parent = parent;
   }
 
-  Enter() {}
-  Exit() {}
-  Update() {}
+  get Name(): string {
+    throw new Error("No implement.");
+  }
+
+  Enter(..._arg: any) {}
+
+  Exit(..._arg: any) {}
+
+  Update(..._arg: any) {}
 }
 
 export { State, FiniteStateMachine };

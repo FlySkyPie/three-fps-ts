@@ -8,7 +8,7 @@
  */
 
 import * as THREE from "three";
-import Stats from "three/examples/jsm/libs/stats.module";
+import Stats from "stats.js";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
@@ -57,7 +57,6 @@ import decalAlpha from "./assets/decals/decal_a.jpg?url";
 //Sky
 import skyTex from "./assets/sky.jpg?url";
 
-import DebugDrawer from "./DebugDrawer";
 import Navmesh from "./entities/Level/Navmesh";
 import AttackTrigger from "./entities/NPC/AttackTrigger";
 import DirectionDebug from "./entities/NPC/DirectionDebug";
@@ -69,27 +68,27 @@ import LevelBulletDecals from "./entities/Level/BulletDecals";
 import PlayerHealth from "./entities/Player/PlayerHealth";
 
 class FPSGameApp {
-  lastFrameTime: any;
+  lastFrameTime: number | null;
 
-  assets: any;
+  assets: Record<any, any>;
 
-  animFrameId: any;
+  animFrameId: number;
 
-  scene: any;
+  scene?: THREE.Scene;
 
-  renderer: any;
+  renderer?: THREE.WebGLRenderer;
 
-  stats: any;
+  stats?: Stats;
 
-  camera: any;
+  camera?: THREE.PerspectiveCamera;
 
-  listener: any;
+  listener?: THREE.AudioListener;
 
   physicsWorld: any;
 
-  mutantAnims: any;
+  mutantAnims: Record<any, any> = {};
 
-  entityManager: any;
+  entityManager?: EntityManager;
 
   constructor() {
     this.lastFrameTime = null;
@@ -101,13 +100,13 @@ class FPSGameApp {
     });
   }
 
-  Init() {
+  private Init() {
     this.LoadAssets();
     this.SetupGraphics();
     this.SetupStartButton();
   }
 
-  SetupGraphics() {
+  private SetupGraphics() {
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.shadowMap.enabled = true;
@@ -137,7 +136,7 @@ class FPSGameApp {
     document.body.appendChild(this.stats.dom);
   }
 
-  SetupPhysics() {
+  private SetupPhysics() {
     // Physics configuration
     const collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
     const dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
@@ -162,12 +161,12 @@ class FPSGameApp {
     //this.debugDrawer.enable();
   }
 
-  SetAnim(name: any, obj: any) {
+  private SetAnim(name: string, obj: any) {
     const clip = obj.animations[0];
     this.mutantAnims[name] = clip;
   }
 
-  PromiseProgress(proms: any, progress_cb: any) {
+  private PromiseProgress(proms: any, progress_cb: any) {
     let d = 0;
     progress_cb(0);
     for (const p of proms) {
@@ -179,34 +178,33 @@ class FPSGameApp {
     return Promise.all(proms);
   }
 
-  AddAsset(asset: any, loader: any, name: any) {
-    return loader.loadAsync(asset).then((result: any) => {
-      this.assets[name] = result;
-    });
+  private async AddAsset(asset: string, loader: THREE.Loader, name: string) {
+    const result = await loader.loadAsync(asset);
+    this.assets[name] = result;
   }
 
-  OnProgress(p: any) {
+  private OnProgress(p: number) {
     const progressbar = document.getElementById("progress")!;
     progressbar.style.width = `${p}%`;
   }
 
-  HideProgress() {
+  private HideProgress() {
     this.OnProgress(0);
   }
 
-  SetupStartButton() {
+  private SetupStartButton() {
     document
       .getElementById("start_game")!
       .addEventListener("click", this.StartGame);
   }
 
-  ShowMenu(visible = true) {
+  private ShowMenu(visible = true) {
     document.getElementById("menu")!.style.visibility = visible
       ? "visible"
       : "hidden";
   }
 
-  async LoadAssets() {
+  private async LoadAssets() {
     const gltfLoader = new GLTFLoader();
     const fbxLoader = new FBXLoader();
     const objLoader = new OBJLoader();
@@ -280,7 +278,7 @@ class FPSGameApp {
     this.ShowMenu();
   }
 
-  EntitySetup() {
+  private EntitySetup() {
     this.entityManager = new EntityManager();
 
     const levelEntity = new Entity();
@@ -306,7 +304,7 @@ class FPSGameApp {
 
     const playerEntity = new Entity();
     playerEntity.SetName("Player");
-    playerEntity.AddComponent(new PlayerPhysics(this.physicsWorld, Ammo));
+    playerEntity.AddComponent(new PlayerPhysics(this.physicsWorld));
     playerEntity.AddComponent(new PlayerControls(this.camera));
     playerEntity.AddComponent(
       new Weapon(
@@ -345,7 +343,7 @@ class FPSGameApp {
       npcEntity.AddComponent(new AttackTrigger(this.physicsWorld));
       npcEntity.AddComponent(new CharacterCollision(this.physicsWorld));
       npcEntity.AddComponent(new DirectionDebug(this.scene));
-      this.entityManager.Add(npcEntity);
+      this.entityManager?.Add(npcEntity);
     });
 
     const uimanagerEntity = new Entity();
@@ -370,38 +368,40 @@ class FPSGameApp {
         )
       );
       box.SetPosition(new THREE.Vector3(loc[0], loc[1], loc[2]));
-      this.entityManager.Add(box);
+      this.entityManager?.Add(box);
     });
 
     this.entityManager.EndSetup();
 
-    this.scene.add(this.camera);
+    this.scene && this.camera && this.scene.add(this.camera);
     this.animFrameId = window.requestAnimationFrame(
       this.OnAnimationFrameHandler
     );
   }
 
-  StartGame = () => {
+  private StartGame = () => {
     window.cancelAnimationFrame(this.animFrameId);
     Input.ClearEventListners();
 
     //Create entities and physics
-    this.scene.clear();
+    this.scene?.clear();
     this.SetupPhysics();
     this.EntitySetup();
     this.ShowMenu(false);
   };
 
   // resize
-  WindowResizeHanlder = () => {
+  private WindowResizeHanlder = () => {
     const { innerHeight, innerWidth } = window;
-    this.renderer.setSize(innerWidth, innerHeight);
-    this.camera.aspect = innerWidth / innerHeight;
-    this.camera.updateProjectionMatrix();
+    this.renderer?.setSize(innerWidth, innerHeight);
+    if (this.camera) {
+      this.camera.aspect = innerWidth / innerHeight;
+      this.camera.updateProjectionMatrix();
+    }
   };
 
   // render loop
-  OnAnimationFrameHandler = (t: any) => {
+  private OnAnimationFrameHandler = (t: number) => {
     if (this.lastFrameTime === null) {
       this.lastFrameTime = t;
     }
@@ -416,18 +416,21 @@ class FPSGameApp {
     );
   };
 
-  PhysicsUpdate = (world: any, timeStep: any) => {
-    this.entityManager.PhysicsUpdate(world, timeStep);
+  private PhysicsUpdate = (world: any, timeStep: any) => {
+    this.entityManager?.PhysicsUpdate(world, timeStep);
   };
 
-  Step(elapsedTime: any) {
+  private Step(elapsedTime: number) {
     this.physicsWorld.stepSimulation(elapsedTime, 10);
     //this.debugDrawer.update();
 
-    this.entityManager.Update(elapsedTime);
+    this.entityManager?.Update(elapsedTime);
 
-    this.renderer.render(this.scene, this.camera);
-    this.stats.update();
+    this.renderer &&
+      this.scene &&
+      this.camera &&
+      this.renderer.render(this.scene, this.camera);
+    this.stats?.update();
   }
 }
 
