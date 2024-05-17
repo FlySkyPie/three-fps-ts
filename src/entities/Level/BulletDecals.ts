@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { Ammo } from "../../AmmoLib";
+import { AmmoInstance } from "../../AmmoLib";
 import Component from "../../Component";
 import { DecalGeometry } from "three/examples/jsm/geometries/DecalGeometry";
 
@@ -49,9 +49,9 @@ export default class LevelBulletDecals extends Component {
     const size = Math.random() * 0.3 + 0.2;
     this.scale.set(size, size, 1.0);
 
-    const rigidBody = Ammo.castObject(
+    const rigidBody = AmmoInstance.castObject(
       e.hitResult.collisionObject,
-      Ammo.btRigidBody
+      AmmoInstance.btRigidBody
     );
     const mesh = rigidBody.mesh;
 

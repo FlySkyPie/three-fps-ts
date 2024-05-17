@@ -164,7 +164,7 @@ class AmmoHelper {
 
 export {
   AmmoHelper,
-  AmmoInstance as Ammo,
+  AmmoInstance,
   createConvexHullShape,
   CollisionFlags,
   CollisionFilterGroups,

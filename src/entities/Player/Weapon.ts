@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import Component from "../../Component";
 import Input from "../../Input";
-import { Ammo, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
+import { AmmoInstance, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
 
 import WeaponFSM from "./WeaponFSM";
 
@@ -208,13 +208,13 @@ export default class Weapon extends Component {
     if (
       AmmoHelper.CastRay(this.world, start, end, this.hitResult, collisionMask)
     ) {
-      const ghostBody = Ammo.castObject(
+      const ghostBody = AmmoInstance.castObject(
         this.hitResult.collisionObject,
-        Ammo.btPairCachingGhostObject
+        AmmoInstance.btPairCachingGhostObject
       );
-      const rigidBody = Ammo.castObject(
+      const rigidBody = AmmoInstance.castObject(
         this.hitResult.collisionObject,
-        Ammo.btRigidBody
+        AmmoInstance.btRigidBody
       );
       const entity = ghostBody.parentEntity || rigidBody.parentEntity;
 

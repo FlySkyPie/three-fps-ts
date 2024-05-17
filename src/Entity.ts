@@ -9,9 +9,9 @@ export default class Entity {
 
   public components: Record<string, any>;
 
-  private position: Vector3;
+  public position: Vector3;
 
-  private rotation: Quaternion;
+  public rotation: Quaternion;
 
   private parent: any;
 

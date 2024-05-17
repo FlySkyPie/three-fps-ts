@@ -6,6 +6,7 @@
  * handles window resizes.
  *
  */
+import type Ammo from "ammojs-typed";
 import "ammojs-typed";
 import * as THREE from "three";
 import Stats from "stats.js";
@@ -14,7 +15,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { SkeletonUtils } from "three/examples/jsm/utils/SkeletonUtils";
 
-import { AmmoHelper, Ammo, createConvexHullShape } from "./AmmoLib";
+import { AmmoHelper, AmmoInstance, createConvexHullShape } from "./AmmoLib";
 import EntityManager from "./EntityManager";
 import Entity from "./Entity";
 import Sky from "./entities/Sky/Sky2";
@@ -84,7 +85,7 @@ class FPSGameApp {
 
   listener?: THREE.AudioListener;
 
-  physicsWorld: any;
+  physicsWorld?: Ammo.btDiscreteDynamicsWorld;
 
   mutantAnims: Record<any, any> = {};
 
@@ -138,23 +139,26 @@ class FPSGameApp {
 
   private SetupPhysics() {
     // Physics configuration
-    const collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
-    const dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
-    const broadphase = new Ammo.btDbvtBroadphase();
-    const solver = new Ammo.btSequentialImpulseConstraintSolver();
-    this.physicsWorld = new Ammo.btDiscreteDynamicsWorld(
+    const collisionConfiguration =
+      new AmmoInstance.btDefaultCollisionConfiguration();
+    const dispatcher = new AmmoInstance.btCollisionDispatcher(
+      collisionConfiguration
+    );
+    const broadphase = new AmmoInstance.btDbvtBroadphase();
+    const solver = new AmmoInstance.btSequentialImpulseConstraintSolver();
+    this.physicsWorld = new AmmoInstance.btDiscreteDynamicsWorld(
       dispatcher,
       broadphase,
       solver,
       collisionConfiguration
     );
-    this.physicsWorld.setGravity(new Ammo.btVector3(0.0, -9.81, 0.0));
-    const fp = Ammo.addFunction(this.PhysicsUpdate);
+    this.physicsWorld.setGravity(new AmmoInstance.btVector3(0.0, -9.81, 0.0));
+    const fp = AmmoInstance.addFunction(this.PhysicsUpdate);
     this.physicsWorld.setInternalTickCallback(fp);
     this.physicsWorld
       .getBroadphase()
       .getOverlappingPairCache()
-      .setInternalGhostPairCallback(new Ammo.btGhostPairCallback());
+      .setInternalGhostPairCallback(new AmmoInstance.btGhostPairCallback());
 
     //Physics debug drawer
     //this.debugDrawer = new DebugDrawer(this.scene, this.physicsWorld);
@@ -336,12 +340,12 @@ class FPSGameApp {
         new NpcCharacterController(
           SkeletonUtils.clone(this.assets["mutant"]),
           this.mutantAnims,
-          this.scene,
-          this.physicsWorld
+          this.scene!,
+          this.physicsWorld!
         )
       );
-      npcEntity.AddComponent(new AttackTrigger(this.physicsWorld));
-      npcEntity.AddComponent(new CharacterCollision(this.physicsWorld));
+      npcEntity.AddComponent(new AttackTrigger(this.physicsWorld!));
+      npcEntity.AddComponent(new CharacterCollision(this.physicsWorld!));
       npcEntity.AddComponent(new DirectionDebug(this.scene));
       this.entityManager?.Add(npcEntity);
     });
@@ -421,7 +425,7 @@ class FPSGameApp {
   };
 
   private Step(elapsedTime: number) {
-    this.physicsWorld.stepSimulation(elapsedTime, 10);
+    this.physicsWorld?.stepSimulation(elapsedTime, 10);
     //this.debugDrawer.update();
 
     this.entityManager?.Update(elapsedTime);

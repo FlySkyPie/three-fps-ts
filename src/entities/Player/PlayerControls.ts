@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import Component from "../../Component";
 import Input from "../../Input";
-import { Ammo } from "../../AmmoLib";
+import { AmmoInstance } from "../../AmmoLib";
 
 import DebugShapes from "../../DebugShapes";
 
@@ -81,8 +81,8 @@ export default class PlayerControls extends Component {
   Initialize() {
     this.physicsComponent = this.GetComponent("PlayerPhysics");
     this.physicsBody = this.physicsComponent.body;
-    this.transform = new Ammo.btTransform();
-    this.zeroVec = new Ammo.btVector3(0.0, 0.0, 0.0);
+    this.transform = new AmmoInstance.btTransform();
+    this.zeroVec = new AmmoInstance.btVector3(0.0, 0.0, 0.0);
     this.angles.setFromQuaternion(this.parent.Rotation);
     this.UpdateRotation();
 

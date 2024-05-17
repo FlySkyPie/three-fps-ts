@@ -1,10 +1,13 @@
-import { FiniteStateMachine, State } from "../../FiniteStateMachine";
 import * as THREE from "three";
 
-export default class CharacterFSM extends FiniteStateMachine {
-  proxy: any;
+import { FiniteStateMachine, State } from "../../FiniteStateMachine";
 
-  constructor(proxy: any) {
+import type CharacterController from "./CharacterController";
+
+export default class CharacterFSM extends FiniteStateMachine {
+  proxy: CharacterController;
+
+  constructor(proxy: CharacterController) {
     super();
     this.proxy = proxy;
     this.Init();
@@ -20,13 +23,13 @@ export default class CharacterFSM extends FiniteStateMachine {
 }
 
 class IdleState extends State {
-  maxWaitTime: any;
+  maxWaitTime: number;
 
-  minWaitTime: any;
+  minWaitTime: number;
 
-  waitTime: any;
+  waitTime: number;
 
-  constructor(parent: any) {
+  constructor(parent: CharacterFSM) {
     super(parent);
     this.maxWaitTime = 5.0;
     this.minWaitTime = 1.0;
@@ -56,7 +59,6 @@ class IdleState extends State {
       Math.random() * (this.maxWaitTime - this.minWaitTime) + this.minWaitTime;
   }
 
-  //@ts-ignore
   Update(t: any) {
     if (this.waitTime <= 0.0) {
       this.parent.SetState("patrol");
@@ -72,7 +74,7 @@ class IdleState extends State {
 }
 
 class PatrolState extends State {
-  constructor(parent: any) {
+  constructor(parent: CharacterFSM) {
     super(parent);
   }
 
@@ -113,17 +115,17 @@ class PatrolState extends State {
 }
 
 class ChaseState extends State {
-  updateFrequency: any;
+  updateFrequency: number;
 
-  updateTimer: any;
+  updateTimer: number;
 
-  attackDistance: any;
+  attackDistance: number;
 
-  shouldRotate: any;
+  shouldRotate: boolean;
 
-  switchDelay: any;
+  switchDelay: number;
 
-  constructor(parent: any) {
+  constructor(parent: CharacterFSM) {
     super(parent);
     this.updateFrequency = 0.5;
     this.updateTimer = 0.0;
@@ -135,6 +137,7 @@ class ChaseState extends State {
   get Name() {
     return "chase";
   }
+
   get Animation() {
     return this.parent.proxy.animations["run"];
   }
@@ -160,7 +163,6 @@ class ChaseState extends State {
     this.RunToPlayer(prevState);
   }
 
-  //@ts-ignore
   Update(t: any) {
     if (this.updateTimer <= 0.0) {
       this.parent.proxy.NavigateToPlayer();
@@ -183,13 +185,13 @@ class ChaseState extends State {
 }
 
 class AttackState extends State {
-  attackTime: any;
+  attackTime: number;
 
-  canHit: any;
+  canHit: boolean;
 
-  attackEvent:any;
+  attackEvent: number = NaN;
 
-  constructor(parent: any) {
+  constructor(parent: CharacterFSM) {
     super(parent);
     this.attackTime = 0.0;
     this.canHit = true;
@@ -217,7 +219,6 @@ class AttackState extends State {
     action.play();
   }
 
-  //@ts-ignore
   Update(t: any) {
     this.parent.proxy.FacePlayer(t);
 
@@ -245,7 +246,7 @@ class AttackState extends State {
 }
 
 class DeadState extends State {
-  constructor(parent: any) {
+  constructor(parent: CharacterFSM) {
     super(parent);
   }
 

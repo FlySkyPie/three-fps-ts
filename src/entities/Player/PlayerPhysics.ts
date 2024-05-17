@@ -1,5 +1,5 @@
 import Component from "../../Component";
-import { Ammo } from "../../AmmoLib";
+import { AmmoInstance } from "../../AmmoLib";
 
 //Bullet enums
 const CF_KINEMATIC_OBJECT = 2;
@@ -24,8 +24,8 @@ export default class PlayerPhysics extends Component {
     this.body = null;
     this.name = "PlayerPhysics";
     this.canJump = false;
-    this.up = new Ammo.btVector3(0, 1, 0);
-    this.tempVec = new Ammo.btVector3();
+    this.up = new AmmoInstance.btVector3(0, 1, 0);
+    this.tempVec = new AmmoInstance.btVector3();
   }
 
   Initialize() {
@@ -33,21 +33,21 @@ export default class PlayerPhysics extends Component {
       radius = 0.3,
       mass = 5;
 
-    const transform = new Ammo.btTransform();
+    const transform = new AmmoInstance.btTransform();
     transform.setIdentity();
     const pos = this.parent.Position;
-    transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z));
-    const motionState = new Ammo.btDefaultMotionState(transform);
+    transform.setOrigin(new AmmoInstance.btVector3(pos.x, pos.y, pos.z));
+    const motionState = new AmmoInstance.btDefaultMotionState(transform);
 
-    const shape = new Ammo.btCapsuleShape(radius, height);
-    const localInertia = new Ammo.btVector3(0, 0, 0);
-    const bodyInfo = new Ammo.btRigidBodyConstructionInfo(
+    const shape = new AmmoInstance.btCapsuleShape(radius, height);
+    const localInertia = new AmmoInstance.btVector3(0, 0, 0);
+    const bodyInfo = new AmmoInstance.btRigidBodyConstructionInfo(
       mass,
       motionState,
       shape,
       localInertia
     );
-    this.body = new Ammo.btRigidBody(bodyInfo);
+    this.body = new AmmoInstance.btRigidBody(bodyInfo);
     this.body.setFriction(0);
 
     //this.body.setCollisionFlags(this.body.getCollisionFlags() | CF_KINEMATIC_OBJECT);
@@ -62,8 +62,8 @@ export default class PlayerPhysics extends Component {
 
     for (let i = 0; i < numManifolds; i++) {
       const contactManifold = dispatcher.getManifoldByIndexInternal(i);
-      const rb0 = Ammo.castObject(contactManifold.getBody0(), Ammo.btRigidBody);
-      const rb1 = Ammo.castObject(contactManifold.getBody1(), Ammo.btRigidBody);
+      const rb0 = AmmoInstance.castObject(contactManifold.getBody0(), AmmoInstance.btRigidBody);
+      const rb1 = AmmoInstance.castObject(contactManifold.getBody1(), AmmoInstance.btRigidBody);
 
       if (rb0 != this.body && rb1 != this.body) {
         continue;

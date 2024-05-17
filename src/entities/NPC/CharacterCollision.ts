@@ -1,28 +1,30 @@
+import type Ammo from "ammo.js";
 import * as THREE from "three";
+
 import Component from "../../Component";
-import { Ammo, AmmoHelper } from "../../AmmoLib";
+import { AmmoInstance, AmmoHelper } from "../../AmmoLib";
 
 export default class CharacterCollision extends Component {
-  world: any;
+  world: Ammo.btDiscreteDynamicsWorld;
 
-  bonePos: any;
+  bonePos: THREE.Vector3;
 
-  boneRot: any;
+  boneRot: THREE.Quaternion;
 
-  globalRot: any;
+  globalRot: Ammo.btQuaternion;
 
-  collisions: any;
+  collisions: Record<string, any>;
 
   controller: any;
 
   mesh: any;
 
-  constructor(physicsWorld: any) {
+  constructor(physicsWorld: Ammo.btDiscreteDynamicsWorld) {
     super();
     this.world = physicsWorld;
     this.bonePos = new THREE.Vector3();
     this.boneRot = new THREE.Quaternion();
-    this.globalRot = new Ammo.btQuaternion();
+    this.globalRot = new AmmoInstance.btQuaternion();
 
     this.collisions = {
       MutantLeftArm: {
@@ -100,17 +102,20 @@ export default class CharacterCollision extends Component {
         (bone: any) => bone.name == key
       );
 
-      const shape = new Ammo.btCapsuleShape(collision.radius, collision.height);
+      const shape = new AmmoInstance.btCapsuleShape(
+        collision.radius,
+        collision.height
+      );
       collision.object = AmmoHelper.CreateTrigger(shape);
       collision.object.parentEntity = this.parent;
 
-      const localRot = new Ammo.btQuaternion();
+      const localRot = new AmmoInstance.btQuaternion();
       localRot.setEulerZYX(
         collision.rotation.z,
         collision.rotation.y,
         collision.rotation.x
       );
-      collision.localTransform = new Ammo.btTransform();
+      collision.localTransform = new AmmoInstance.btTransform();
       collision.localTransform.setIdentity();
       collision.localTransform.setRotation(localRot);
       collision.localTransform

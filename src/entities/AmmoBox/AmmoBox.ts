@@ -1,5 +1,5 @@
 import Component from "../../Component";
-import { Ammo, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
+import { AmmoInstance, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
 
 export default class AmmoBox extends Component {
   name: any;
@@ -30,7 +30,7 @@ export default class AmmoBox extends Component {
     this.scene = scene;
     this.world = physicsWorld;
 
-    this.quat = new Ammo.btQuaternion();
+    this.quat = new AmmoInstance.btQuaternion();
     this.update = true;
   }
 

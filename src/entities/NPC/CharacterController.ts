@@ -1,48 +1,50 @@
+import type Ammo from "ammo.js";
 import * as THREE from "three";
-import Component from "../../Component";
-import { Ammo, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
-import CharacterFSM from "./CharacterFSM";
 
+import Component from "../../Component";
+import { AmmoInstance, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
 import DebugShapes from "../../DebugShapes";
 
+import CharacterFSM from "./CharacterFSM";
+
 export default class CharacterController extends Component {
-  name: any;
+  name: string;
 
-  physicsWorld: any;
+  physicsWorld: Ammo.btDiscreteDynamicsWorld;
 
-  scene: any;
+  scene: THREE.Scene;
 
-  mixer: any;
+  mixer: THREE.AnimationMixer | null = null;
 
-  clips: any;
+  clips: Record<any, any>;
 
-  animations: any;
+  animations: Record<any, any>;
 
   model: any;
 
-  dir: any;
+  dir: THREE.Vector3;
 
-  forwardVec: any;
+  forwardVec: THREE.Vector3;
 
-  pathDebug: any;
+  pathDebug: DebugShapes;
 
-  path: any;
+  path: any[];
 
-  tempRot: any;
+  tempRot: THREE.Quaternion;
 
-  viewAngle: any;
+  viewAngle: number;
 
-  maxViewDistance: any;
+  maxViewDistance: number;
 
-  tempVec: any;
+  tempVec: THREE.Vector3;
 
-  attackDistance: any;
+  attackDistance: number;
 
-  canMove: any;
+  canMove: boolean;
 
-  health: any;
+  health: number;
 
-  stateMachine: any;
+  stateMachine?: CharacterFSM;
 
   navmesh: any;
 
@@ -56,7 +58,12 @@ export default class CharacterController extends Component {
 
   lastPos: any;
 
-  constructor(model: any, clips: any, scene: any, physicsWorld: any) {
+  constructor(
+    model: THREE.Object3D,
+    clips: Record<any, any>,
+    scene: THREE.Scene,
+    physicsWorld: Ammo.btDiscreteDynamicsWorld
+  ) {
     super();
     this.name = "CharacterController";
     this.physicsWorld = physicsWorld;
@@ -80,12 +87,12 @@ export default class CharacterController extends Component {
     this.health = 100;
   }
 
-  SetAnim(name: any, clip: any) {
-    const action = this.mixer.clipAction(clip);
+  private SetAnim(name: string, clip: any) {
+    const action = this.mixer?.clipAction(clip);
     this.animations[name] = { clip, action };
   }
 
-  SetupAnimations() {
+  private SetupAnimations() {
     Object.keys(this.clips).forEach((key) => {
       this.SetAnim(key, this.clips[key]);
     });
@@ -128,7 +135,7 @@ export default class CharacterController extends Component {
     this.stateMachine.SetState("idle");
   }
 
-  UpdateDirection() {
+  private UpdateDirection() {
     this.dir.copy(this.forwardVec);
     this.dir.applyQuaternion(this.parent.rotation);
   }
@@ -163,7 +170,10 @@ export default class CharacterController extends Component {
         collisionMask
       )
     ) {
-      const body = Ammo.castObject(rayInfo.collisionObject, Ammo.btRigidBody);
+      const body = AmmoInstance.castObject(
+        rayInfo.collisionObject,
+        AmmoInstance.btRigidBody
+      );
 
       if (body == this.player.GetComponent("PlayerPhysics").body) {
         return true;
@@ -220,20 +230,20 @@ export default class CharacterController extends Component {
     this.player.Broadcast({ topic: "hit" });
   }
 
-  TakeHit = (msg: any) => {
+  private TakeHit = (msg: any) => {
     this.health = Math.max(0, this.health - msg.amount);
 
     if (this.health == 0) {
-      this.stateMachine.SetState("dead");
+      this.stateMachine?.SetState("dead");
     } else {
-      const stateName = this.stateMachine.currentState.Name;
+      const stateName = this.stateMachine?.currentState?.Name;
       if (stateName == "idle" || stateName == "patrol") {
-        this.stateMachine.SetState("chase");
+        this.stateMachine?.SetState("chase");
       }
     }
   };
 
-  MoveAlongPath(t: any) {
+  private MoveAlongPath(t: any) {
     if (!this.path?.length) return;
 
     const target = this.path[0].clone().sub(this.model.position);
@@ -259,7 +269,7 @@ export default class CharacterController extends Component {
     }
   }
 
-  ApplyRootMotion() {
+  private ApplyRootMotion() {
     if (this.canMove) {
       const vel = this.rootBone.position.clone();
       vel.sub(this.lastPos).multiplyScalar(0.01);
@@ -278,13 +288,13 @@ export default class CharacterController extends Component {
     this.rootBone.position.x = this.rootBone.refPos.x;
   }
 
-  Update(t: any) {
+  public Update(t: any) {
     this.mixer && this.mixer.update(t);
     this.ApplyRootMotion();
 
     this.UpdateDirection();
     this.MoveAlongPath(t);
-    this.stateMachine.Update(t);
+    this.stateMachine?.Update(t);
 
     this.parent.SetRotation(this.model.quaternion);
     this.parent.SetPosition(this.model.position);

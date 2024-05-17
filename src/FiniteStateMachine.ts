@@ -1,3 +1,5 @@
+import type CharacterFSM from "./entities/NPC/CharacterFSM";
+
 class FiniteStateMachine {
   states: Record<string, State>;
 
@@ -34,7 +36,7 @@ class FiniteStateMachine {
 abstract class State {
   //   parent: any;
 
-  constructor(public parent: any) {
+  constructor(public parent: CharacterFSM) {
     // this.parent = parent;
   }
 

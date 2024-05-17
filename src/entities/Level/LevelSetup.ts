@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 import Component from "../../Component";
-import { Ammo, createConvexHullShape } from "../../AmmoLib";
+import { AmmoInstance, createConvexHullShape } from "../../AmmoLib";
 
 export default class LevelSetup extends Component {
   scene: any;
@@ -58,18 +58,18 @@ export default class LevelSetup extends Component {
   SetStaticCollider(mesh: any) {
     const shape = createConvexHullShape(mesh);
     const mass = 0;
-    const transform = new Ammo.btTransform();
+    const transform = new AmmoInstance.btTransform();
     transform.setIdentity();
-    const motionState = new Ammo.btDefaultMotionState(transform);
+    const motionState = new AmmoInstance.btDefaultMotionState(transform);
 
-    const localInertia = new Ammo.btVector3(0, 0, 0);
-    const rbInfo = new Ammo.btRigidBodyConstructionInfo(
+    const localInertia = new AmmoInstance.btVector3(0, 0, 0);
+    const rbInfo = new AmmoInstance.btRigidBodyConstructionInfo(
       mass,
       motionState,
       shape,
       localInertia
     );
-    const object = new Ammo.btRigidBody(rbInfo);
+    const object = new AmmoInstance.btRigidBody(rbInfo);
     object.parentEntity = this.parent;
     object.mesh = mesh;
 

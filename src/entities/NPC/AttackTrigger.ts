@@ -1,38 +1,41 @@
 import Component from "../../Component";
-import { Ammo, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
+import Ammo from "ammo.js";
+
+import type PlayerPhysics from "../Player/PlayerPhysics";
+import { AmmoInstance, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
 
 export default class AttackTrigger extends Component {
-  name: any;
+  name: string;
 
   physicsWorld: any;
 
-  localTransform: any;
+  localTransform: Ammo.btTransform;
 
-  quat: any;
+  quat: Ammo.btQuaternion;
 
-  overlapping: any;
+  overlapping: boolean;
 
-  ghostObj: any;
+  ghostObj?: Ammo.btPairCachingGhostObject;
 
-  playerPhysics: any;
+  playerPhysics?: PlayerPhysics;
 
-  constructor(physicsWorld: any) {
+  constructor(physicsWorld: Ammo.btDiscreteDynamicsWorld) {
     super();
     this.name = "AttackTrigger";
     this.physicsWorld = physicsWorld;
 
     //Relative to parent
-    this.localTransform = new Ammo.btTransform();
+    this.localTransform = new AmmoInstance.btTransform();
     this.localTransform.setIdentity();
     this.localTransform.getOrigin().setValue(0.0, 1.0, 1.0);
 
-    this.quat = new Ammo.btQuaternion();
+    this.quat = new AmmoInstance.btQuaternion();
 
     this.overlapping = false;
   }
 
   SetupTrigger() {
-    const shape = new Ammo.btSphereShape(0.4);
+    const shape = new AmmoInstance.btSphereShape(0.4);
     this.ghostObj = AmmoHelper.CreateTrigger(shape);
 
     this.physicsWorld.addCollisionObject(
@@ -51,14 +54,14 @@ export default class AttackTrigger extends Component {
   override PhysicsUpdate(world: any, t: any) {
     this.overlapping = AmmoHelper.IsTriggerOverlapping(
       this.ghostObj,
-      this.playerPhysics.body
+      this.playerPhysics!.body
     );
   }
 
   Update(t: any) {
-    const entityPos = this.parent.position;
-    const entityRot = this.parent.rotation;
-    const transform = this.ghostObj.getWorldTransform();
+    const entityPos = this.parent!.position;
+    const entityRot = this.parent!.rotation;
+    const transform = this.ghostObj!.getWorldTransform();
 
     this.quat.setValue(entityRot.x, entityRot.y, entityRot.z, entityRot.w);
     transform.setRotation(this.quat);
