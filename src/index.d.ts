@@ -8,3 +8,17 @@ declare module "ammo.js" {
 
   export default Ammo;
 }
+// three-pathfinding
+
+declare module "three-pathfinding" {
+  // type Pathfinding = {
+  //   new(x: number, y: number): Vector2D
+  //   (x:number, y: number): Vector2D
+  // }
+  class Pathfinding {
+    public static createZone: any;
+  }
+  export default any;
+
+  export { Pathfinding };
+}

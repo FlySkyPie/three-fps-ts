@@ -22,7 +22,7 @@ export default class CharacterFSM extends FiniteStateMachine {
   }
 }
 
-class IdleState extends State {
+class IdleState extends State<CharacterFSM> {
   maxWaitTime: number;
 
   minWaitTime: number;
@@ -73,7 +73,7 @@ class IdleState extends State {
   }
 }
 
-class PatrolState extends State {
+class PatrolState extends State<CharacterFSM> {
   constructor(parent: CharacterFSM) {
     super(parent);
   }
@@ -114,7 +114,7 @@ class PatrolState extends State {
   }
 }
 
-class ChaseState extends State {
+class ChaseState extends State<CharacterFSM> {
   updateFrequency: number;
 
   updateTimer: number;
@@ -184,7 +184,7 @@ class ChaseState extends State {
   }
 }
 
-class AttackState extends State {
+class AttackState extends State<CharacterFSM> {
   attackTime: number;
 
   canHit: boolean;
@@ -200,6 +200,7 @@ class AttackState extends State {
   get Name() {
     return "attack";
   }
+
   get Animation() {
     return this.parent.proxy.animations["attack"];
   }
@@ -245,7 +246,7 @@ class AttackState extends State {
   }
 }
 
-class DeadState extends State {
+class DeadState extends State<CharacterFSM> {
   constructor(parent: CharacterFSM) {
     super(parent);
   }
@@ -253,6 +254,7 @@ class DeadState extends State {
   get Name() {
     return "dead";
   }
+
   get Animation() {
     return this.parent.proxy.animations["die"];
   }

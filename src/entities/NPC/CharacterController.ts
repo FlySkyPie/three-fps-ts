@@ -104,12 +104,12 @@ export default class CharacterController extends Component {
     this.hitbox = this.GetComponent("AttackTrigger");
     this.player = this.FindEntity("Player");
 
-    this.parent.RegisterEventHandler(this.TakeHit, "hit");
+    this.parent?.RegisterEventHandler(this.TakeHit, "hit");
 
     const scene = this.model;
 
     scene.scale.setScalar(0.01);
-    scene.position.copy(this.parent.position);
+    scene.position.copy(this.parent?.position);
 
     this.mixer = new THREE.AnimationMixer(scene);
 
@@ -137,7 +137,7 @@ export default class CharacterController extends Component {
 
   private UpdateDirection() {
     this.dir.copy(this.forwardVec);
-    this.dir.applyQuaternion(this.parent.rotation);
+    this.dir.applyQuaternion(this.parent!.rotation);
   }
 
   CanSeeThePlayer() {
@@ -296,7 +296,7 @@ export default class CharacterController extends Component {
     this.MoveAlongPath(t);
     this.stateMachine?.Update(t);
 
-    this.parent.SetRotation(this.model.quaternion);
-    this.parent.SetPosition(this.model.position);
+    this.parent?.SetRotation(this.model.quaternion);
+    this.parent?.SetPosition(this.model.position);
   }
 }

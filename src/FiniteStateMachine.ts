@@ -1,16 +1,16 @@
 import type CharacterFSM from "./entities/NPC/CharacterFSM";
 
 class FiniteStateMachine {
-  states: Record<string, State>;
+  states: Record<string, State<FiniteStateMachine>>;
 
-  currentState: State | null;
+  currentState: State<FiniteStateMachine> | null;
 
   constructor() {
     this.states = {};
     this.currentState = null;
   }
 
-  public AddState(name: string, instance: State) {
+  public AddState(name: string, instance: State<FiniteStateMachine>) {
     this.states[name] = instance;
   }
 
@@ -33,10 +33,10 @@ class FiniteStateMachine {
   }
 }
 
-abstract class State {
+abstract class State<T> {
   //   parent: any;
 
-  constructor(public parent: CharacterFSM) {
+  constructor(public parent: T) {
     // this.parent = parent;
   }
 

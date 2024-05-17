@@ -308,7 +308,7 @@ class FPSGameApp {
 
     const playerEntity = new Entity();
     playerEntity.SetName("Player");
-    playerEntity.AddComponent(new PlayerPhysics(this.physicsWorld));
+    playerEntity.AddComponent(new PlayerPhysics(this.physicsWorld!));
     playerEntity.AddComponent(new PlayerControls(this.camera));
     playerEntity.AddComponent(
       new Weapon(
@@ -346,7 +346,7 @@ class FPSGameApp {
       );
       npcEntity.AddComponent(new AttackTrigger(this.physicsWorld!));
       npcEntity.AddComponent(new CharacterCollision(this.physicsWorld!));
-      npcEntity.AddComponent(new DirectionDebug(this.scene));
+      npcEntity.AddComponent(new DirectionDebug(this.scene!));
       this.entityManager?.Add(npcEntity);
     });
 

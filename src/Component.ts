@@ -15,11 +15,11 @@ export default abstract class Component {
     this.parent = parent;
   }
 
-  GetComponent(name: string) {
+  GetComponent<T = any>(name: string): T {
     return this.parent?.GetComponent(name);
   }
 
-  FindEntity(name: any) {
+  FindEntity<T = any>(name: string): T {
     return this.parent?.FindEntity(name);
   }
 
@@ -27,7 +27,7 @@ export default abstract class Component {
     this.parent?.Broadcast(msg);
   }
 
-  Update(_: any) {}
+  Update(..._arg: any[]) {}
 
-  PhysicsUpdate(_: any) {}
+  PhysicsUpdate(..._arg: any[]) {}
 }

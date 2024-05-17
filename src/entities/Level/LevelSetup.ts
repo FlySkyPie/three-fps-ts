@@ -1,18 +1,23 @@
+import type Ammo from "ammo.js";
 import * as THREE from "three";
 
 import Component from "../../Component";
 import { AmmoInstance, createConvexHullShape } from "../../AmmoLib";
 
 export default class LevelSetup extends Component {
-  scene: any;
+  scene: THREE.Scene;
 
-  physicsWorld: any;
+  physicsWorld: Ammo.btDiscreteDynamicsWorld;
 
-  name: any;
+  name: string;
 
   mesh: any;
 
-  constructor(mesh: any, scene: any, physicsWorld: any) {
+  constructor(
+    mesh: any,
+    scene: THREE.Scene,
+    physicsWorld: Ammo.btDiscreteDynamicsWorld
+  ) {
     super();
     this.scene = scene;
     this.physicsWorld = physicsWorld;

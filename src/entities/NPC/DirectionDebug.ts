@@ -2,17 +2,17 @@ import * as THREE from "three";
 import Component from "../../Component";
 
 export default class DirectionDebug extends Component {
-  name: any;
+  name: string;
 
-  scene: any;
+  scene:  THREE.Scene;
 
-  dir: any;
+  dir: THREE.Vector3;
 
-  forwardVec: any;
+  forwardVec: THREE.Vector3;
 
-  arrowHelper: any;
+  arrowHelper?: THREE.ArrowHelper;
 
-  constructor(scene: any) {
+  constructor(scene: THREE.Scene) {
     super();
     this.name = "DirectionDebug";
     this.scene = scene;
@@ -28,11 +28,11 @@ export default class DirectionDebug extends Component {
 
   Update(t: any) {
     this.dir.copy(this.forwardVec);
-    this.dir.applyQuaternion(this.parent.rotation);
-    this.arrowHelper.position.copy(this.parent.position);
-    this.arrowHelper.position.y += 1;
-    this.arrowHelper.setDirection(this.dir);
-    this.arrowHelper.setLength(1);
-    this.arrowHelper.setColor(0xffff00);
+    this.dir.applyQuaternion(this.parent!.rotation);
+    this.arrowHelper?.position.copy(this.parent!.position);
+    this.arrowHelper!.position.y += 1;
+    this.arrowHelper?.setDirection(this.dir);
+    this.arrowHelper?.setLength(1);
+    this.arrowHelper?.setColor(0xffff00);
   }
 }

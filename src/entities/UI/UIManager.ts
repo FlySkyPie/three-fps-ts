@@ -1,7 +1,7 @@
 import Component from "../../Component";
 
 export default class UIManager extends Component {
-  name: any;
+  name: string;
 
   constructor() {
     super();
@@ -13,7 +13,7 @@ export default class UIManager extends Component {
     document.getElementById("max_ammo")!.innerText = rest;
   }
 
-  SetHealth(health: any) {
+  SetHealth(health: number) {
     document.getElementById("health_progress")!.style.width = `${health}%`;
   }
 

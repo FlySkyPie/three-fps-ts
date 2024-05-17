@@ -1,9 +1,11 @@
 import Component from "../../Component";
 
-export default class PlayerHealth extends Component {
-  health: any;
+import type UIManager from "../UI/UIManager";
 
-  uimanager: any;
+export default class PlayerHealth extends Component {
+  health: number;
+
+  uimanager?: UIManager;
 
   constructor() {
     super();
@@ -13,12 +15,12 @@ export default class PlayerHealth extends Component {
 
   TakeHit = (e: any) => {
     this.health = Math.max(0, this.health - 10);
-    this.uimanager.SetHealth(this.health);
+    this.uimanager?.SetHealth(this.health);
   };
 
   Initialize() {
     this.uimanager = this.FindEntity("UIManager").GetComponent("UIManager");
-    this.parent.RegisterEventHandler(this.TakeHit, "hit");
-    this.uimanager.SetHealth(this.health);
+    this.parent?.RegisterEventHandler(this.TakeHit, "hit");
+    this.uimanager?.SetHealth(this.health);
   }
 }

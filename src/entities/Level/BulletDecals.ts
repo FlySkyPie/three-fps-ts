@@ -1,26 +1,32 @@
 import * as THREE from "three";
-import { AmmoInstance } from "../../AmmoLib";
-import Component from "../../Component";
 import { DecalGeometry } from "three/examples/jsm/geometries/DecalGeometry";
 
+import { AmmoInstance } from "../../AmmoLib";
+import Component from "../../Component";
+
 export default class LevelBulletDecals extends Component {
-  name: any;
+  name: string;
 
-  scene: any;
+  scene: THREE.Scene;
 
-  rot: any;
+  rot: THREE.Euler;
 
-  mat4: any;
+  mat4:  THREE.Matrix4;
 
-  position: any;
+  position: THREE.Vector3;
 
-  up: any;
+  up: THREE.Vector3;
 
-  scale: any;
+  scale: THREE.Vector3;
 
-  material: any;
+  material: THREE.MeshStandardMaterial;
 
-  constructor(scene: any, colorMap: any, normalMap: any, alphaMap: any) {
+  constructor(
+    scene: THREE.Scene,
+    colorMap:  THREE.Texture,
+    normalMap:  THREE.Texture,
+    alphaMap: THREE.Texture
+  ) {
     super();
     this.name = "LevelBulletDecals";
     this.scene = scene;
@@ -68,6 +74,6 @@ export default class LevelBulletDecals extends Component {
   };
 
   Initialize() {
-    this.parent.RegisterEventHandler(this.Hit, "hit");
+    this.parent?.RegisterEventHandler(this.Hit, "hit");
   }
 }

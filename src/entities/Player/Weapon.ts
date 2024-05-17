@@ -149,7 +149,7 @@ export default class Weapon extends Component {
     this.SetupInput();
 
     //Listen to ammo pickup event
-    this.parent.RegisterEventHandler(this.AmmoPickup, "AmmoPickup");
+    this.parent?.RegisterEventHandler(this.AmmoPickup, "AmmoPickup");
   }
 
   SetupInput() {

@@ -1,28 +1,35 @@
+import type Ammo from "ammo.js";
+
 import Component from "../../Component";
 import { AmmoInstance, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
 
 export default class AmmoBox extends Component {
-  name: any;
+  name: string;
 
   model: any;
 
   shape: any;
 
-  scene: any;
+  scene: THREE.Scene;
 
-  world: any;
+  world: Ammo.btDiscreteDynamicsWorld;
 
-  quat: any;
+  quat: Ammo.btQuaternion;
 
-  update: any;
+  update: boolean;
 
   player: any;
 
   playerPhysics: any;
 
-  trigger: any;
+  trigger?: Ammo.btPairCachingGhostObject;
 
-  constructor(scene: any, model: any, shape: any, physicsWorld: any) {
+  constructor(
+    scene: THREE.Scene,
+    model: any,
+    shape: any,
+    physicsWorld: Ammo.btDiscreteDynamicsWorld
+  ) {
     super();
     this.name = "AmmoBox";
     this.model = model;
@@ -30,6 +37,7 @@ export default class AmmoBox extends Component {
     this.scene = scene;
     this.world = physicsWorld;
 
+    //@ts-ignore
     this.quat = new AmmoInstance.btQuaternion();
     this.update = true;
   }
@@ -50,7 +58,7 @@ export default class AmmoBox extends Component {
   Disable() {
     this.update = false;
     this.scene.remove(this.model);
-    this.world.removeCollisionObject(this.trigger);
+    this.world.removeCollisionObject(this.trigger!);
   }
 
   Update(t: any) {
@@ -58,13 +66,13 @@ export default class AmmoBox extends Component {
       return;
     }
 
-    const entityPos = this.parent.position;
-    const entityRot = this.parent.rotation;
+    const entityPos = this.parent!.position;
+    const entityRot = this.parent!.rotation;
 
     this.model.position.copy(entityPos);
     this.model.quaternion.copy(entityRot);
 
-    const transform = this.trigger.getWorldTransform();
+    const transform = this.trigger!.getWorldTransform();
 
     this.quat.setValue(entityRot.x, entityRot.y, entityRot.z, entityRot.w);
     transform.setRotation(this.quat);

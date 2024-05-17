@@ -1,10 +1,13 @@
-import { FiniteStateMachine, State } from "../../FiniteStateMachine";
 import * as THREE from "three";
 
-export default class WeaponFSM extends FiniteStateMachine {
-  proxy: any;
+import { FiniteStateMachine, State } from "../../FiniteStateMachine";
 
-  constructor(proxy: any) {
+import type Weapon from "./Weapon";
+
+export default class WeaponFSM extends FiniteStateMachine {
+  proxy: Weapon;
+
+  constructor(proxy: Weapon) {
     super();
     this.proxy = proxy;
     this.Init();
@@ -17,8 +20,8 @@ export default class WeaponFSM extends FiniteStateMachine {
   }
 }
 
-class IdleState extends State {
-  constructor(parent: any) {
+class IdleState extends State<WeaponFSM> {
+  constructor(parent: WeaponFSM) {
     super(parent);
   }
 
@@ -49,7 +52,7 @@ class IdleState extends State {
   }
 }
 
-class ShootState extends State {
+class ShootState extends State<WeaponFSM> {
   constructor(parent: any) {
     super(parent);
   }
@@ -82,7 +85,7 @@ class ShootState extends State {
   }
 }
 
-class ReloadState extends State {
+class ReloadState extends State<WeaponFSM> {
   constructor(parent: any) {
     super(parent);
 

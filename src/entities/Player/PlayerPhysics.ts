@@ -1,3 +1,5 @@
+import type Ammo from "ammojs-typed";
+
 import Component from "../../Component";
 import { AmmoInstance } from "../../AmmoLib";
 
@@ -6,19 +8,19 @@ const CF_KINEMATIC_OBJECT = 2;
 const DISABLE_DEACTIVATION = 4;
 
 export default class PlayerPhysics extends Component {
-  world: any;
+  world: Ammo.btDiscreteDynamicsWorld;
 
   body: any;
 
-  name: any;
+  name: string;
 
-  canJump: any;
+  canJump: boolean;
 
-  up: any;
+  up: Ammo.btVector3;
 
-  tempVec: any;
+  tempVec: Ammo.btVector3;
 
-  constructor(world: any) {
+  constructor(world: Ammo.btDiscreteDynamicsWorld) {
     super();
     this.world = world;
     this.body = null;
@@ -35,7 +37,7 @@ export default class PlayerPhysics extends Component {
 
     const transform = new AmmoInstance.btTransform();
     transform.setIdentity();
-    const pos = this.parent.Position;
+    const pos = this.parent!.Position;
     transform.setOrigin(new AmmoInstance.btVector3(pos.x, pos.y, pos.z));
     const motionState = new AmmoInstance.btDefaultMotionState(transform);
 
@@ -62,8 +64,14 @@ export default class PlayerPhysics extends Component {
 
     for (let i = 0; i < numManifolds; i++) {
       const contactManifold = dispatcher.getManifoldByIndexInternal(i);
-      const rb0 = AmmoInstance.castObject(contactManifold.getBody0(), AmmoInstance.btRigidBody);
-      const rb1 = AmmoInstance.castObject(contactManifold.getBody1(), AmmoInstance.btRigidBody);
+      const rb0 = AmmoInstance.castObject(
+        contactManifold.getBody0(),
+        AmmoInstance.btRigidBody
+      );
+      const rb1 = AmmoInstance.castObject(
+        contactManifold.getBody1(),
+        AmmoInstance.btRigidBody
+      );
 
       if (rb0 != this.body && rb1 != this.body) {
         continue;

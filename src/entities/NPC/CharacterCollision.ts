@@ -24,6 +24,8 @@ export default class CharacterCollision extends Component {
     this.world = physicsWorld;
     this.bonePos = new THREE.Vector3();
     this.boneRot = new THREE.Quaternion();
+
+    //@ts-ignore
     this.globalRot = new AmmoInstance.btQuaternion();
 
     this.collisions = {
@@ -109,6 +111,7 @@ export default class CharacterCollision extends Component {
       collision.object = AmmoHelper.CreateTrigger(shape);
       collision.object.parentEntity = this.parent;
 
+      //@ts-ignore
       const localRot = new AmmoInstance.btQuaternion();
       localRot.setEulerZYX(
         collision.rotation.z,

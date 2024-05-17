@@ -22,9 +22,9 @@ void main() {
 }`;
 
 export default class Sky extends Component {
-  scene: any;
+  scene: THREE.Scene;
 
-  constructor(scene: any) {
+  constructor(scene: THREE.Scene) {
     super();
     this.scene = scene;
   }

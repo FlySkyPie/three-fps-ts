@@ -29,6 +29,7 @@ export default class AttackTrigger extends Component {
     this.localTransform.setIdentity();
     this.localTransform.getOrigin().setValue(0.0, 1.0, 1.0);
 
+    //@ts-ignore
     this.quat = new AmmoInstance.btQuaternion();
 
     this.overlapping = false;
@@ -50,8 +51,7 @@ export default class AttackTrigger extends Component {
     this.SetupTrigger();
   }
 
-  //@ts-ignore
-  override PhysicsUpdate(world: any, t: any) {
+   PhysicsUpdate(world: any, t: any) {
     this.overlapping = AmmoHelper.IsTriggerOverlapping(
       this.ghostObj,
       this.playerPhysics!.body

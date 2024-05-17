@@ -3,8 +3,6 @@ import Component from "../../Component";
 import Input from "../../Input";
 import { AmmoInstance } from "../../AmmoLib";
 
-import DebugShapes from "../../DebugShapes";
-
 export default class PlayerControls extends Component {
   name: any;
 
@@ -83,7 +81,7 @@ export default class PlayerControls extends Component {
     this.physicsBody = this.physicsComponent.body;
     this.transform = new AmmoInstance.btTransform();
     this.zeroVec = new AmmoInstance.btVector3(0.0, 0.0, 0.0);
-    this.angles.setFromQuaternion(this.parent.Rotation);
+    this.angles.setFromQuaternion(this.parent!.Rotation);
     this.UpdateRotation();
 
     Input.AddMouseMoveListner(this.OnMouseMove);
@@ -128,9 +126,9 @@ export default class PlayerControls extends Component {
     this.pitch.setFromAxisAngle(this.xAxis, this.angles.x);
     this.yaw.setFromAxisAngle(this.yAxis, this.angles.y);
 
-    this.parent.Rotation.multiplyQuaternions(this.yaw, this.pitch).normalize();
+    this.parent?.Rotation.multiplyQuaternions(this.yaw, this.pitch).normalize();
 
-    this.camera.quaternion.copy(this.parent.Rotation);
+    this.camera.quaternion.copy(this.parent!.Rotation);
   }
 
   Accelarate = (direction: any, t: any) => {
@@ -179,7 +177,7 @@ export default class PlayerControls extends Component {
       ms.getWorldTransform(this.transform);
       const p = this.transform.getOrigin();
       this.camera.position.set(p.x(), p.y() + this.yOffset, p.z());
-      this.parent.SetPosition(this.camera.position);
+      this.parent?.SetPosition(this.camera.position);
     }
   }
 }
