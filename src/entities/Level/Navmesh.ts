@@ -22,7 +22,7 @@ export default class Navmesh extends Component {
     this.mesh = mesh;
   }
 
-  Initialize() {
+  public Initialize() {
     this.pathfinding = new Pathfinding();
 
     this.mesh.traverse((node: any) => {
@@ -35,12 +35,12 @@ export default class Navmesh extends Component {
     });
   }
 
-  GetRandomNode(p: any, range: any) {
+  public GetRandomNode(p: any, range: number) {
     const groupID = this.pathfinding!.getGroup(this.zone, p);
     return this.pathfinding!.getRandomNode(this.zone, groupID, p, range);
   }
 
-  FindPath(a: any, b: any) {
+  public FindPath(a: any, b: any) {
     const groupID = this.pathfinding!.getGroup(this.zone, a);
     return this.pathfinding!.findPath(a, b, this.zone, groupID);
   }

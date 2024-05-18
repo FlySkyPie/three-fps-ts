@@ -14,7 +14,7 @@ class FiniteStateMachine {
     this.states[name] = instance;
   }
 
-  SetState(name: any) {
+  SetState(name: string) {
     const prevState = this.currentState;
 
     if (prevState) {

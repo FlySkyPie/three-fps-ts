@@ -11,7 +11,7 @@ export default class LevelBulletDecals extends Component {
 
   rot: THREE.Euler;
 
-  mat4:  THREE.Matrix4;
+  mat4: THREE.Matrix4;
 
   position: THREE.Vector3;
 
@@ -23,8 +23,8 @@ export default class LevelBulletDecals extends Component {
 
   constructor(
     scene: THREE.Scene,
-    colorMap:  THREE.Texture,
-    normalMap:  THREE.Texture,
+    colorMap: THREE.Texture,
+    normalMap: THREE.Texture,
     alphaMap: THREE.Texture
   ) {
     super();
@@ -48,7 +48,7 @@ export default class LevelBulletDecals extends Component {
     });
   }
 
-  Hit = (e: any) => {
+  private Hit = (e: any) => {
     this.mat4.lookAt(this.position, e.hitResult.intersectionNormal, this.up);
     this.rot.setFromRotationMatrix(this.mat4);
 

@@ -65,7 +65,7 @@ export default class AmmoBox extends Component {
     this.world.removeCollisionObject(this.trigger!);
   }
 
-  Update(t: any) {
+  Update() {
     if (!this.update) {
       return;
     }

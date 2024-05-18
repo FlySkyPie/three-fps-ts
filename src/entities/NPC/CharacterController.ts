@@ -21,9 +21,9 @@ export default class CharacterController extends Component {
 
   mixer: THREE.AnimationMixer | null = null;
 
-  clips: Record<any, any>;
+  clips: Record<string, any>;
 
-  animations: Record<any, any>;
+  animations: Record<string, { clip: any; action: any }>;
 
   model: any;
 
@@ -65,7 +65,7 @@ export default class CharacterController extends Component {
 
   constructor(
     model: THREE.Object3D,
-    clips: Record<any, any>,
+    clips: Record<string, any>,
     scene: THREE.Scene,
     physicsWorld: Ammo.btDiscreteDynamicsWorld
   ) {
@@ -295,7 +295,7 @@ export default class CharacterController extends Component {
     this.rootBone.position.x = this.rootBone.refPos.x;
   }
 
-  public Update(t: any) {
+  public Update(t: number) {
     this.mixer && this.mixer.update(t);
     this.ApplyRootMotion();
 

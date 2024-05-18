@@ -35,7 +35,7 @@ export default class AttackTrigger extends Component {
     this.overlapping = false;
   }
 
-  SetupTrigger() {
+  private SetupTrigger() {
     const shape = new AmmoInstance.btSphereShape(0.4);
     this.ghostObj = AmmoHelper.CreateTrigger(shape);
 
@@ -45,20 +45,20 @@ export default class AttackTrigger extends Component {
     );
   }
 
-  Initialize() {
+  public Initialize() {
     this.playerPhysics =
       this.FindEntity("Player").GetComponent<PlayerPhysics>("PlayerPhysics");
     this.SetupTrigger();
   }
 
-   PhysicsUpdate(world: any, t: any) {
+  public PhysicsUpdate() {
     this.overlapping = AmmoHelper.IsTriggerOverlapping(
       this.ghostObj,
       this.playerPhysics!.body
     );
   }
 
-  Update(t: any) {
+  public Update() {
     const entityPos = this.parent!.position;
     const entityRot = this.parent!.rotation;
     const transform = this.ghostObj!.getWorldTransform();

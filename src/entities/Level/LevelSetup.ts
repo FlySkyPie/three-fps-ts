@@ -25,7 +25,7 @@ export default class LevelSetup extends Component {
     this.mesh = mesh;
   }
 
-  LoadScene() {
+  private LoadScene() {
     this.mesh.traverse((node: any) => {
       if (node.isMesh || node.isLight) {
         node.castShadow = true;
@@ -60,7 +60,7 @@ export default class LevelSetup extends Component {
     this.scene.add(this.mesh);
   }
 
-  SetStaticCollider(mesh: any) {
+  private SetStaticCollider(mesh: any) {
     const shape = createConvexHullShape(mesh);
     const mass = 0;
     const transform = new AmmoInstance.btTransform();

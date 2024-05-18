@@ -45,7 +45,7 @@ class IdleState extends State<WeaponFSM> {
     action.play();
   }
 
-  Update(t: any) {
+  Update(t: number) {
     if (this.parent.proxy.shoot && this.parent.proxy.magAmmo > 0) {
       this.parent.SetState("shoot");
     }
@@ -78,7 +78,7 @@ class ShootState extends State<WeaponFSM> {
     action.play();
   }
 
-  Update(t: any) {
+  Update(t: number) {
     if (!this.parent.proxy.shoot || this.parent.proxy.magAmmo == 0) {
       this.parent.SetState("idle");
     }
@@ -89,7 +89,7 @@ class ReloadState extends State<WeaponFSM> {
   constructor(parent: any) {
     super(parent);
 
-    this.parent.proxy.mixer.addEventListener(
+    this.parent.proxy.mixer?.addEventListener(
       "finished",
       this.AnimationFinished
     );

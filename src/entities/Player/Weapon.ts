@@ -271,7 +271,7 @@ export default class Weapon extends Component {
     this.flash.life = Math.max(0.0, this.flash.life - t);
   }
 
-  Update(t: any) {
+  Update(t: number) {
     this.mixer?.update(t);
     this.stateMachine?.Update(t);
     this.Shoot(t);

@@ -80,7 +80,7 @@ export default class PlayerControls extends Component {
     this.yAxis = new THREE.Vector3(0.0, 1.0, 0.0);
   }
 
-  Initialize() {
+  public Initialize() {
     this.physicsComponent = this.GetComponent<PlayerPhysics>("PlayerPhysics");
     this.physicsBody = this.physicsComponent.body;
     this.transform = new AmmoInstance.btTransform();
@@ -99,7 +99,7 @@ export default class PlayerControls extends Component {
     });
   }
 
-  OnPointerlockChange = () => {
+  private OnPointerlockChange = () => {
     if (document.pointerLockElement) {
       this.isLocked = true;
       return;
@@ -108,7 +108,7 @@ export default class PlayerControls extends Component {
     this.isLocked = false;
   };
 
-  OnMouseMove = (event: any) => {
+  private OnMouseMove = (event: any) => {
     if (!this.isLocked) {
       return;
     }
@@ -126,7 +126,7 @@ export default class PlayerControls extends Component {
     this.UpdateRotation();
   };
 
-  UpdateRotation() {
+  private UpdateRotation() {
     this.pitch.setFromAxisAngle(this.xAxis, this.angles.x);
     this.yaw.setFromAxisAngle(this.yAxis, this.angles.y);
 
@@ -135,7 +135,7 @@ export default class PlayerControls extends Component {
     this.camera.quaternion.copy(this.parent!.Rotation);
   }
 
-  Accelarate = (direction: any, t: any) => {
+  private Accelarate = (direction: any, t: any) => {
     const accel = this.tempVec
       .copy(direction)
       .multiplyScalar(this.acceleration * t);
@@ -143,14 +143,14 @@ export default class PlayerControls extends Component {
     this.speed.clampLength(0.0, this.maxSpeed);
   };
 
-  Deccelerate = (t: any) => {
+  private Deccelerate = (t: number) => {
     const frameDeccel = this.tempVec
       .copy(this.speed)
       .multiplyScalar(this.decceleration * t);
     this.speed.add(frameDeccel);
   };
 
-  Update(t: any) {
+  public Update(t: number) {
     const forwardFactor = Input.GetKeyDown("KeyS") - Input.GetKeyDown("KeyW");
     const rightFactor = Input.GetKeyDown("KeyD") - Input.GetKeyDown("KeyA");
     const direction = this.moveDir

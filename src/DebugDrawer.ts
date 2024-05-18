@@ -15,7 +15,6 @@ import {
   BufferGeometry,
   LineBasicMaterial,
   LineSegments,
-  Scene,
   StaticDrawUsage,
 } from "three";
 

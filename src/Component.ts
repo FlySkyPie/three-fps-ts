@@ -37,7 +37,7 @@ export default abstract class Component<ParentType extends Entity = Entity> {
     this.parent?.Broadcast(msg);
   }
 
-  Update(..._arg: any[]) {}
+  Update(_t: number) {}
 
   PhysicsUpdate(..._arg: any[]) {}
 }

@@ -10,7 +10,7 @@ export default class EntityManager {
     this.entities = [];
   }
 
-  Get<T extends Entity>(name: string): T {
+  public Get<T extends Entity>(name: string): T {
     const result = this.entities.find((el) => el.Name === name);
     if (!result) {
       throw new Error("The Entity not found.");

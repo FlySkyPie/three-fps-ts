@@ -6,6 +6,15 @@ import { AmmoInstance, AmmoHelper } from "../../AmmoLib";
 
 import type CharacterController from "./CharacterController";
 
+type ICollision = {
+  rotation: { x: number; y: number; z: number };
+  position: { x: number; y: number; z: number };
+  radius: number;
+  height: number;
+
+  [key: string]: any;
+};
+
 export default class CharacterCollision extends Component {
   world: Ammo.btDiscreteDynamicsWorld;
 
@@ -15,7 +24,7 @@ export default class CharacterCollision extends Component {
 
   globalRot: Ammo.btQuaternion;
 
-  collisions: Record<string, any>;
+  collisions: Record<string, ICollision>;
 
   controller?: CharacterController;
 
@@ -137,7 +146,7 @@ export default class CharacterCollision extends Component {
     });
   }
 
-  Update(t: any) {
+  Update() {
     Object.keys(this.collisions).forEach((key) => {
       const collision = this.collisions[key];
 

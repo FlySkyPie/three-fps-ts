@@ -59,7 +59,7 @@ class IdleState extends State<CharacterFSM> {
       Math.random() * (this.maxWaitTime - this.minWaitTime) + this.minWaitTime;
   }
 
-  Update(t: any) {
+  Update(t: number) {
     if (this.waitTime <= 0.0) {
       this.parent.SetState("patrol");
       return;
@@ -104,8 +104,7 @@ class PatrolState extends State<CharacterFSM> {
     this.parent.proxy.NavigateToRandomPoint();
   }
 
-  //@ts-ignore
-  Update(t: any) {
+  Update() {
     if (this.parent.proxy.CanSeeThePlayer()) {
       this.parent.SetState("chase");
     } else if (this.parent.proxy.path && this.parent.proxy.path.length == 0) {
@@ -163,7 +162,7 @@ class ChaseState extends State<CharacterFSM> {
     this.RunToPlayer(prevState);
   }
 
-  Update(t: any) {
+  Update(t: number) {
     if (this.updateTimer <= 0.0) {
       this.parent.proxy.NavigateToPlayer();
       this.updateTimer = this.updateFrequency;
@@ -220,7 +219,7 @@ class AttackState extends State<CharacterFSM> {
     action.play();
   }
 
-  Update(t: any) {
+  Update(t: number) {
     this.parent.proxy.FacePlayer(t);
 
     if (!this.parent.proxy.IsCloseToPlayer && this.attackTime <= 0.0) {
@@ -273,6 +272,5 @@ class DeadState extends State<CharacterFSM> {
     action.play();
   }
 
-  //@ts-ignore
-  Update(t: any) {}
+  Update() {}
 }

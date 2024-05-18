@@ -7,7 +7,7 @@ export default class DebugShapes {
 
   pointGeom: SphereGeometry;
 
-  constructor(public scene: any) {
+  constructor(public scene: THREE.Scene) {
     this.meshes = [];
     this.pointGeom = new SphereGeometry(0.3, 8, 8);
   }
