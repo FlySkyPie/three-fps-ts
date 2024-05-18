@@ -3,13 +3,14 @@ import * as _Ammo from "ammo.js";
 import * as THREE from "three";
 import { ConvexHull } from "three/examples/jsm/math/ConvexHull";
 
-let AmmoInstance: _Ammo.IAmmo = null as any;
+export let AmmoInstance: _Ammo.IAmmo = null as any;
 let rayOrigin: any = null;
 let rayDest: any = null;
 let closestRayResultCallback: any = null;
 
-const CollisionFlags = { CF_NO_CONTACT_RESPONSE: 4 };
-const CollisionFilterGroups = {
+export const CollisionFlags = { CF_NO_CONTACT_RESPONSE: 4 };
+
+export const CollisionFilterGroups = {
   DefaultFilter: 1,
   StaticFilter: 2,
   KinematicFilter: 4,
@@ -19,7 +20,7 @@ const CollisionFilterGroups = {
   AllFilter: -1, //all bits sets: DefaultFilter | StaticFilter | KinematicFilter | DebrisFilter | SensorTrigger
 };
 
-function createConvexHullShape(object: any) {
+export function createConvexHullShape(object: any) {
   const geometry = createConvexGeom(object);
   let coords = geometry.attributes.position.array;
   let tempVec = new AmmoInstance!.btVector3(0, 0, 0);
@@ -57,7 +58,7 @@ function createConvexGeom(object: any) {
   return geom;
 }
 
-class AmmoHelper {
+export class AmmoHelper {
   static Init(callback = () => {}) {
     _Ammo.default.call(this).then((ammo: any) => {
       AmmoInstance = ammo;
@@ -161,11 +162,3 @@ class AmmoHelper {
     }
   }
 }
-
-export {
-  AmmoHelper,
-  AmmoInstance,
-  createConvexHullShape,
-  CollisionFlags,
-  CollisionFilterGroups,
-};
