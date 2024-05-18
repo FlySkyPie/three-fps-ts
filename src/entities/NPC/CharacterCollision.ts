@@ -4,6 +4,8 @@ import * as THREE from "three";
 import Component from "../../Component";
 import { AmmoInstance, AmmoHelper } from "../../AmmoLib";
 
+import type CharacterController from "./CharacterController";
+
 export default class CharacterCollision extends Component {
   world: Ammo.btDiscreteDynamicsWorld;
 
@@ -15,7 +17,7 @@ export default class CharacterCollision extends Component {
 
   collisions: Record<string, any>;
 
-  controller: any;
+  controller?: CharacterController;
 
   mesh: any;
 
@@ -87,7 +89,9 @@ export default class CharacterCollision extends Component {
   }
 
   Initialize() {
-    this.controller = this.GetComponent("CharacterController");
+    this.controller = this.GetComponent<CharacterController>(
+      "CharacterController"
+    );
 
     this.controller.model.traverse((child: any) => {
       if (!child.isSkinnedMesh) {

@@ -12,7 +12,7 @@ export default class Navmesh extends Component {
 
   mesh: any;
 
-  pathfinding: any;
+  pathfinding?: Pathfinding;
 
   constructor(scene: THREE.Scene, mesh: any) {
     super();
@@ -27,7 +27,7 @@ export default class Navmesh extends Component {
 
     this.mesh.traverse((node: any) => {
       if (node.isMesh) {
-        this.pathfinding.setZoneData(
+        this.pathfinding!.setZoneData(
           this.zone,
           Pathfinding.createZone(node.geometry)
         );
@@ -36,12 +36,12 @@ export default class Navmesh extends Component {
   }
 
   GetRandomNode(p: any, range: any) {
-    const groupID = this.pathfinding.getGroup(this.zone, p);
-    return this.pathfinding.getRandomNode(this.zone, groupID, p, range);
+    const groupID = this.pathfinding!.getGroup(this.zone, p);
+    return this.pathfinding!.getRandomNode(this.zone, groupID, p, range);
   }
 
   FindPath(a: any, b: any) {
-    const groupID = this.pathfinding.getGroup(this.zone, a);
-    return this.pathfinding.findPath(a, b, this.zone, groupID);
+    const groupID = this.pathfinding!.getGroup(this.zone, a);
+    return this.pathfinding!.findPath(a, b, this.zone, groupID);
   }
 }

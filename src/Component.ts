@@ -1,9 +1,9 @@
 import type Entity from "./Entity";
 
-export default abstract class Component {
-  name: any;
+export default abstract class Component<ParentType extends Entity = Entity> {
+  name: string = "Unknown Component";
 
-  parent: Entity | null;
+  parent: ParentType | null;
 
   constructor() {
     this.parent = null;
@@ -11,16 +11,26 @@ export default abstract class Component {
 
   Initialize() {}
 
-  SetParent(parent: Entity) {
+  SetParent(parent: ParentType) {
     this.parent = parent;
   }
 
-  GetComponent<T = any>(name: string): T {
-    return this.parent?.GetComponent(name);
+  GetComponent<T extends Component>(name: string): T {
+    const result = this.parent?.GetComponent<T>(name);
+    if (!result) {
+      throw new Error("The Component not found.");
+    }
+
+    return result;
   }
 
-  FindEntity<T = any>(name: string): T {
-    return this.parent?.FindEntity(name);
+  FindEntity<T extends Entity>(name: string): T {
+    const result = this.parent?.FindEntity<T>(name);
+    if (!result) {
+      throw new Error("The Entity not found.");
+    }
+
+    return result;
   }
 
   Broadcast(msg: any) {

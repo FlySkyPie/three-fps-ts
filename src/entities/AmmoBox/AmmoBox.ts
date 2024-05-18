@@ -1,7 +1,10 @@
 import type Ammo from "ammo.js";
 
+import type Entity from "../../Entity";
 import Component from "../../Component";
 import { AmmoInstance, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
+
+import type PlayerPhysics from "../Player/PlayerPhysics";
 
 export default class AmmoBox extends Component {
   name: string;
@@ -18,9 +21,9 @@ export default class AmmoBox extends Component {
 
   update: boolean;
 
-  player: any;
+  player?: Entity;
 
-  playerPhysics: any;
+  playerPhysics?: PlayerPhysics;
 
   trigger?: Ammo.btPairCachingGhostObject;
 
@@ -44,7 +47,8 @@ export default class AmmoBox extends Component {
 
   Initialize() {
     this.player = this.FindEntity("Player");
-    this.playerPhysics = this.player.GetComponent("PlayerPhysics");
+    this.playerPhysics =
+      this.player.GetComponent<PlayerPhysics>("PlayerPhysics");
 
     this.trigger = AmmoHelper.CreateTrigger(this.shape);
 
@@ -79,9 +83,9 @@ export default class AmmoBox extends Component {
     transform.getOrigin().setValue(entityPos.x, entityPos.y, entityPos.z);
 
     if (
-      AmmoHelper.IsTriggerOverlapping(this.trigger, this.playerPhysics.body)
+      AmmoHelper.IsTriggerOverlapping(this.trigger, this.playerPhysics!.body)
     ) {
-      this.player.Broadcast({ topic: "AmmoPickup" });
+      this.player?.Broadcast({ topic: "AmmoPickup" });
       this.Disable();
     }
   }

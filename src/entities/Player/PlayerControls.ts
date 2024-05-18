@@ -1,54 +1,58 @@
+import type Ammo from "ammojs-typed";
 import * as THREE from "three";
+
 import Component from "../../Component";
 import Input from "../../Input";
 import { AmmoInstance } from "../../AmmoLib";
 
+import type PlayerPhysics from "./PlayerPhysics";
+
 export default class PlayerControls extends Component {
-  name: any;
+  name: string;
 
-  camera: any;
+  camera: THREE.PerspectiveCamera;
 
-  timeZeroToMax: any;
+  timeZeroToMax: number;
 
-  maxSpeed: any;
+  maxSpeed: number;
 
-  speed: any;
+  speed: THREE.Vector3;
 
-  acceleration: any;
+  acceleration: number;
 
-  decceleration: any;
+  decceleration: number;
 
-  mouseSpeed: any;
+  mouseSpeed: number;
 
-  physicsComponent: any;
+  physicsComponent: PlayerPhysics | null;
 
-  isLocked: any;
+  isLocked: boolean;
 
-  angles: any;
+  angles: THREE.Euler;
 
-  pitch: any;
+  pitch: THREE.Quaternion;
 
-  yaw: any;
+  yaw: THREE.Quaternion;
 
-  jumpVelocity: any;
+  jumpVelocity: number;
 
-  yOffset: any;
+  yOffset: number;
 
-  tempVec: any;
+  tempVec: THREE.Vector3;
 
-  moveDir: any;
+  moveDir: THREE.Vector3;
 
-  xAxis: any;
+  xAxis: THREE.Vector3;
 
-  yAxis: any;
+  yAxis: THREE.Vector3;
 
-  physicsBody: any;
+  physicsBody: Ammo.btRigidBody | null = null;
 
-  transform: any;
+  transform?: Ammo.btTransform;
 
-  zeroVec: any;
+  zeroVec?: Ammo.btVector3;
 
-  constructor(camera: any) {
+  constructor(camera: THREE.PerspectiveCamera) {
     super();
     this.name = "PlayerControls";
     this.camera = camera;
@@ -77,7 +81,7 @@ export default class PlayerControls extends Component {
   }
 
   Initialize() {
-    this.physicsComponent = this.GetComponent("PlayerPhysics");
+    this.physicsComponent = this.GetComponent<PlayerPhysics>("PlayerPhysics");
     this.physicsBody = this.physicsComponent.body;
     this.transform = new AmmoInstance.btTransform();
     this.zeroVec = new AmmoInstance.btVector3(0.0, 0.0, 0.0);
@@ -153,9 +157,9 @@ export default class PlayerControls extends Component {
       .set(rightFactor, 0.0, forwardFactor)
       .normalize();
 
-    const velocity = this.physicsBody.getLinearVelocity();
+    const velocity = this.physicsBody!.getLinearVelocity();
 
-    if (Input.GetKeyDown("Space") && this.physicsComponent.canJump) {
+    if (Input.GetKeyDown("Space") && this.physicsComponent?.canJump) {
       velocity.setY(this.jumpVelocity);
       this.physicsComponent.canJump = false;
     }
@@ -169,13 +173,13 @@ export default class PlayerControls extends Component {
     velocity.setX(moveVector.x);
     velocity.setZ(moveVector.z);
 
-    this.physicsBody.setLinearVelocity(velocity);
-    this.physicsBody.setAngularVelocity(this.zeroVec);
+    this.physicsBody?.setLinearVelocity(velocity);
+    this.physicsBody?.setAngularVelocity(this.zeroVec!);
 
-    const ms = this.physicsBody.getMotionState();
+    const ms = this.physicsBody?.getMotionState();
     if (ms) {
-      ms.getWorldTransform(this.transform);
-      const p = this.transform.getOrigin();
+      ms.getWorldTransform(this.transform!);
+      const p = this.transform!.getOrigin();
       this.camera.position.set(p.x(), p.y() + this.yOffset, p.z());
       this.parent?.SetPosition(this.camera.position);
     }

@@ -7,7 +7,7 @@ import { AmmoInstance, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
 export default class AttackTrigger extends Component {
   name: string;
 
-  physicsWorld: any;
+  physicsWorld: Ammo.btDiscreteDynamicsWorld;
 
   localTransform: Ammo.btTransform;
 
@@ -47,7 +47,7 @@ export default class AttackTrigger extends Component {
 
   Initialize() {
     this.playerPhysics =
-      this.FindEntity("Player").GetComponent("PlayerPhysics");
+      this.FindEntity("Player").GetComponent<PlayerPhysics>("PlayerPhysics");
     this.SetupTrigger();
   }
 

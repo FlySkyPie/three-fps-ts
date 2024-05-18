@@ -1,19 +1,20 @@
 import { Vector3, Quaternion } from "three";
 
 import type Component from "./Component";
+import type EntityManager from "./EntityManager";
 
 export default class Entity {
   id: number = NaN;
 
   private name: number | string | null;
 
-  public components: Record<string, any>;
+  public components: Record<string, Component>;
 
   public position: Vector3;
 
   public rotation: Quaternion;
 
-  private parent: any;
+  private parent: EntityManager | null;
 
   eventHandlers: Record<string, any[]>;
 
@@ -31,7 +32,7 @@ export default class Entity {
     this.components[component.name] = component;
   }
 
-  public SetParent(parent: any) {
+  public SetParent(parent: EntityManager) {
     this.parent = parent;
   }
 
@@ -43,15 +44,15 @@ export default class Entity {
     return this.name;
   }
 
-  GetComponent(name: string) {
-    return this.components[name];
+  public GetComponent<T extends Component>(name: string): T {
+    return this.components[name] as any;
   }
 
   public SetPosition(position: Vector3) {
     this.position.copy(position);
   }
 
-  get Position() {
+  public get Position() {
     return this.position;
   }
 
@@ -59,15 +60,20 @@ export default class Entity {
     this.rotation.copy(rotation);
   }
 
-  get Rotation() {
+  public get Rotation() {
     return this.rotation;
   }
 
-  FindEntity(name: any) {
-    return this.parent.Get(name);
+  public FindEntity<T extends Entity>(name: string): T {
+    const result = this.parent?.Get(name);
+    if (!result) {
+      throw new Error("The Entity not found.");
+    }
+
+    return result as any;
   }
 
-  RegisterEventHandler(handler: any, topic: any) {
+  public RegisterEventHandler(handler: (...e: any) => void, topic: string) {
     if (!this.eventHandlers.hasOwnProperty(topic)) {
       this.eventHandlers[topic] = [];
     }
@@ -75,7 +81,7 @@ export default class Entity {
     this.eventHandlers[topic].push(handler);
   }
 
-  Broadcast(msg: any) {
+  public Broadcast(msg: any) {
     if (!this.eventHandlers.hasOwnProperty(msg.topic)) {
       return;
     }

@@ -74,7 +74,7 @@ export default class LevelSetup extends Component {
       shape,
       localInertia
     );
-    const object = new AmmoInstance.btRigidBody(rbInfo);
+    const object: any = new AmmoInstance.btRigidBody(rbInfo);
     object.parentEntity = this.parent;
     object.mesh = mesh;
 

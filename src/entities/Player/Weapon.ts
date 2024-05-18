@@ -1,60 +1,64 @@
+import type Ammo from "ammojs-typed";
 import * as THREE from "three";
+
 import Component from "../../Component";
 import Input from "../../Input";
 import { AmmoInstance, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
 
+import type UIManager from "../UI/UIManager";
+
 import WeaponFSM from "./WeaponFSM";
 
 export default class Weapon extends Component {
-  name: any;
+  name: string;
 
-  camera: any;
+  camera: THREE.PerspectiveCamera;
 
-  world: any;
+  world: Ammo.btDiscreteDynamicsWorld;
 
   model: any;
 
   flash: any;
 
-  animations: any;
+  animations: Record<string, any>;
 
-  shoot: any;
+  shoot: boolean;
 
-  fireRate: any;
+  fireRate: number;
 
-  shootTimer: any;
+  shootTimer: number;
 
   shotSoundBuffer: any;
 
-  audioListner: any;
+  audioListner: THREE.AudioListener;
 
-  magAmmo: any;
+  magAmmo: number;
 
-  ammoPerMag: any;
+  ammoPerMag: number;
 
-  ammo: any;
+  ammo: number;
 
-  damage: any;
+  damage: number;
 
-  uimanager: any;
+  uimanager: UIManager | null = null;
 
-  reloading: any;
+  reloading: boolean;
 
-  hitResult: any;
+  hitResult: Record<string, any>;
 
-  mixer: any;
+  mixer?: THREE.AnimationMixer;
 
-  shotSound: any;
+  shotSound?: THREE.Audio;
 
-  stateMachine: any;
+  stateMachine?: WeaponFSM;
 
   constructor(
-    camera: any,
+    camera: THREE.PerspectiveCamera,
     model: any,
     flash: any,
-    world: any,
+    world: Ammo.btDiscreteDynamicsWorld,
     shotSoundBuffer: any,
-    listner: any
+    audioListner: THREE.AudioListener
   ) {
     super();
     this.name = "Weapon";
@@ -68,7 +72,7 @@ export default class Weapon extends Component {
     this.shootTimer = 0.0;
 
     this.shotSoundBuffer = shotSoundBuffer;
-    this.audioListner = listner;
+    this.audioListner = audioListner;
 
     this.magAmmo = 30;
     this.ammoPerMag = 30;
@@ -83,7 +87,7 @@ export default class Weapon extends Component {
   }
 
   SetAnim(name: any, clip: any) {
-    const action = this.mixer.clipAction(clip);
+    const action = this.mixer!.clipAction(clip);
     this.animations[name] = { clip, action };
   }
 
@@ -111,7 +115,7 @@ export default class Weapon extends Component {
 
   AmmoPickup = (e: any) => {
     this.ammo += 30;
-    this.uimanager.SetAmmo(this.magAmmo, this.ammo);
+    this.uimanager?.SetAmmo(this.magAmmo, this.ammo);
   };
 
   Initialize() {
@@ -143,7 +147,8 @@ export default class Weapon extends Component {
     this.stateMachine = new WeaponFSM(this);
     this.stateMachine.SetState("idle");
 
-    this.uimanager = this.FindEntity("UIManager").GetComponent("UIManager");
+    this.uimanager =
+      this.FindEntity("UIManager").GetComponent<UIManager>("UIManager");
     this.uimanager.SetAmmo(this.magAmmo, this.ammo);
 
     this.SetupInput();
@@ -185,7 +190,7 @@ export default class Weapon extends Component {
     }
 
     this.reloading = true;
-    this.stateMachine.SetState("reload");
+    this.stateMachine?.SetState("reload");
   }
 
   ReloadDone() {
@@ -193,7 +198,7 @@ export default class Weapon extends Component {
     const bulletsNeeded = this.ammoPerMag - this.magAmmo;
     this.magAmmo = Math.min(this.ammo + this.magAmmo, this.ammoPerMag);
     this.ammo = Math.max(0, this.ammo - bulletsNeeded);
-    this.uimanager.SetAmmo(this.magAmmo, this.ammo);
+    this.uimanager?.SetAmmo(this.magAmmo, this.ammo);
   }
 
   Raycast() {
@@ -247,13 +252,13 @@ export default class Weapon extends Component {
       this.flash.scale.set(scale, 1, 1);
       this.shootTimer = this.fireRate;
       this.magAmmo = Math.max(0, this.magAmmo - 1);
-      this.uimanager.SetAmmo(this.magAmmo, this.ammo);
+      this.uimanager?.SetAmmo(this.magAmmo, this.ammo);
 
       this.Raycast();
       this.Broadcast({ topic: "ak47_shot" });
 
-      this.shotSound.isPlaying && this.shotSound.stop();
-      this.shotSound.play();
+      this.shotSound?.isPlaying && this.shotSound.stop();
+      this.shotSound?.play();
     }
 
     this.shootTimer = Math.max(0.0, this.shootTimer - t);
@@ -267,8 +272,8 @@ export default class Weapon extends Component {
   }
 
   Update(t: any) {
-    this.mixer.update(t);
-    this.stateMachine.Update(t);
+    this.mixer?.update(t);
+    this.stateMachine?.Update(t);
     this.Shoot(t);
     this.AnimateMuzzle(t);
   }

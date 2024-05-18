@@ -19,7 +19,7 @@ export default class PlayerHealth extends Component {
   };
 
   Initialize() {
-    this.uimanager = this.FindEntity("UIManager").GetComponent("UIManager");
+    this.uimanager = this.FindEntity("UIManager").GetComponent<UIManager>("UIManager");
     this.parent?.RegisterEventHandler(this.TakeHit, "hit");
     this.uimanager?.SetHealth(this.health);
   }

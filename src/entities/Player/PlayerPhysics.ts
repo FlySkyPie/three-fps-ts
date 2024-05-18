@@ -10,7 +10,7 @@ const DISABLE_DEACTIVATION = 4;
 export default class PlayerPhysics extends Component {
   world: Ammo.btDiscreteDynamicsWorld;
 
-  body: any;
+  body: Ammo.btRigidBody | null = null;
 
   name: string;
 

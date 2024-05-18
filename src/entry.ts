@@ -288,12 +288,12 @@ class FPSGameApp {
     const levelEntity = new Entity();
     levelEntity.SetName("Level");
     levelEntity.AddComponent(
-      new LevelSetup(this.assets["level"], this.scene, this.physicsWorld)
+      new LevelSetup(this.assets["level"], this.scene!, this.physicsWorld!)
     );
-    levelEntity.AddComponent(new Navmesh(this.scene, this.assets["navmesh"]));
+    levelEntity.AddComponent(new Navmesh(this.scene!, this.assets["navmesh"]));
     levelEntity.AddComponent(
       new LevelBulletDecals(
-        this.scene,
+        this.scene!,
         this.assets["decalColor"],
         this.assets["decalNormal"],
         this.assets["decalAlpha"]
@@ -303,21 +303,21 @@ class FPSGameApp {
 
     const skyEntity = new Entity();
     skyEntity.SetName("Sky");
-    skyEntity.AddComponent(new Sky(this.scene, this.assets["skyTex"]));
+    skyEntity.AddComponent(new Sky(this.scene!, this.assets["skyTex"]));
     this.entityManager.Add(skyEntity);
 
     const playerEntity = new Entity();
     playerEntity.SetName("Player");
     playerEntity.AddComponent(new PlayerPhysics(this.physicsWorld!));
-    playerEntity.AddComponent(new PlayerControls(this.camera));
+    playerEntity.AddComponent(new PlayerControls(this.camera!));
     playerEntity.AddComponent(
       new Weapon(
-        this.camera,
+        this.camera!,
         this.assets["ak47"].scene,
         this.assets["muzzleFlash"],
-        this.physicsWorld,
+        this.physicsWorld!,
         this.assets["ak47Shot"],
-        this.listener
+        this.listener!
       )
     );
     playerEntity.AddComponent(new PlayerHealth());
@@ -365,10 +365,10 @@ class FPSGameApp {
       box.SetName(`AmmoBox${i}`);
       box.AddComponent(
         new AmmoBox(
-          this.scene,
+          this.scene!,
           this.assets["ammobox"].clone(),
           this.assets["ammoboxShape"],
-          this.physicsWorld
+          this.physicsWorld!
         )
       );
       box.SetPosition(new THREE.Vector3(loc[0], loc[1], loc[2]));

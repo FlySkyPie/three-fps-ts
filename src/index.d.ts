@@ -17,6 +17,14 @@ declare module "three-pathfinding" {
   // }
   class Pathfinding {
     public static createZone: any;
+
+    public setZoneData: any;
+
+    public getGroup: any;
+
+    public getRandomNode: any;
+
+    public findPath: any;
   }
   export default any;
 

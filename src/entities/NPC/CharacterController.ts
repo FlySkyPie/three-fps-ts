@@ -1,10 +1,15 @@
 import type Ammo from "ammo.js";
 import * as THREE from "three";
 
+import type Entity from "../../Entity";
 import Component from "../../Component";
 import { AmmoInstance, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
 import DebugShapes from "../../DebugShapes";
 
+import type Navmesh from "../Level/Navmesh";
+import type PlayerPhysics from "../Player/PlayerPhysics";
+
+import type AttackTrigger from "./AttackTrigger";
 import CharacterFSM from "./CharacterFSM";
 
 export default class CharacterController extends Component {
@@ -46,11 +51,11 @@ export default class CharacterController extends Component {
 
   stateMachine?: CharacterFSM;
 
-  navmesh: any;
+  navmesh?: Navmesh;
 
-  hitbox: any;
+  hitbox?: AttackTrigger;
 
-  player: any;
+  player?: Entity;
 
   skinnedmesh: any;
 
@@ -100,9 +105,9 @@ export default class CharacterController extends Component {
 
   Initialize() {
     this.stateMachine = new CharacterFSM(this);
-    this.navmesh = this.FindEntity("Level").GetComponent("Navmesh");
-    this.hitbox = this.GetComponent("AttackTrigger");
-    this.player = this.FindEntity("Player");
+    this.navmesh = this.FindEntity("Level").GetComponent<Navmesh>("Navmesh");
+    this.hitbox = this.GetComponent<AttackTrigger>("AttackTrigger");
+    this.player = this.FindEntity<Entity>("Player");
 
     this.parent?.RegisterEventHandler(this.TakeHit, "hit");
 
@@ -141,7 +146,7 @@ export default class CharacterController extends Component {
   }
 
   CanSeeThePlayer() {
-    const playerPos = this.player.Position.clone();
+    const playerPos = this.player!.Position.clone();
     const modelPos = this.model.position.clone();
     modelPos.y += 1.35;
     const charToPlayer = playerPos.sub(modelPos);
@@ -165,7 +170,7 @@ export default class CharacterController extends Component {
       AmmoHelper.CastRay(
         this.physicsWorld,
         modelPos,
-        this.player.Position,
+        this.player!.Position,
         rayInfo,
         collisionMask
       )
@@ -175,7 +180,9 @@ export default class CharacterController extends Component {
         AmmoInstance.btRigidBody
       );
 
-      if (body == this.player.GetComponent("PlayerPhysics").body) {
+      if (
+        body == this.player!.GetComponent<PlayerPhysics>("PlayerPhysics").body
+      ) {
         return true;
       }
     }
@@ -184,14 +191,14 @@ export default class CharacterController extends Component {
   }
 
   NavigateToRandomPoint() {
-    const node = this.navmesh.GetRandomNode(this.model.position, 50);
-    this.path = this.navmesh.FindPath(this.model.position, node);
+    const node = this.navmesh!.GetRandomNode(this.model.position, 50);
+    this.path = this.navmesh!.FindPath(this.model.position, node);
   }
 
   NavigateToPlayer() {
-    this.tempVec.copy(this.player.Position);
+    this.tempVec.copy(this.player!.Position);
     this.tempVec.y = 0.5;
-    this.path = this.navmesh.FindPath(this.model.position, this.tempVec);
+    this.path = this.navmesh!.FindPath(this.model.position, this.tempVec);
 
     /*
         if(this.path){
@@ -204,7 +211,7 @@ export default class CharacterController extends Component {
   }
 
   FacePlayer(t: any, rate = 3.0) {
-    this.tempVec.copy(this.player.Position).sub(this.model.position);
+    this.tempVec.copy(this.player!.Position).sub(this.model.position);
     this.tempVec.y = 0.0;
     this.tempVec.normalize();
 
@@ -213,7 +220,7 @@ export default class CharacterController extends Component {
   }
 
   get IsCloseToPlayer() {
-    this.tempVec.copy(this.player.Position).sub(this.model.position);
+    this.tempVec.copy(this.player!.Position).sub(this.model.position);
 
     if (this.tempVec.lengthSq() <= this.attackDistance * this.attackDistance) {
       return true;
@@ -223,11 +230,11 @@ export default class CharacterController extends Component {
   }
 
   get IsPlayerInHitbox() {
-    return this.hitbox.overlapping;
+    return this.hitbox!.overlapping;
   }
 
   HitPlayer() {
-    this.player.Broadcast({ topic: "hit" });
+    this.player?.Broadcast({ topic: "hit" });
   }
 
   private TakeHit = (msg: any) => {
