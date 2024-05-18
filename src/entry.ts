@@ -13,7 +13,7 @@ import Stats from "stats.js";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
-import { SkeletonUtils } from "three/examples/jsm/utils/SkeletonUtils";
+import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils";
 
 import { AmmoHelper, AmmoInstance, createConvexHullShape } from "./AmmoLib";
 import EntityManager from "./EntityManager";
@@ -338,7 +338,7 @@ class FPSGameApp {
       npcEntity.SetName(`Mutant${i}`);
       npcEntity.AddComponent(
         new NpcCharacterController(
-          SkeletonUtils.clone(this.assets["mutant"]),
+          (SkeletonUtils as any).clone(this.assets["mutant"]),
           this.mutantAnims,
           this.scene!,
           this.physicsWorld!
