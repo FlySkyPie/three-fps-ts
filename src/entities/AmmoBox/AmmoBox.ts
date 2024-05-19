@@ -1,5 +1,5 @@
 import type { Scene } from "three";
-import type Ammo from "ammo.js";
+import Ammo from "ammojs-typed";
 
 import type Entity from "../../Entity";
 import Component from "../../Component";

@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      ammo.js:
-        specifier: kripken/ammo.js
-        version: https://codeload.github.com/kripken/ammo.js/tar.gz/1ed8b58c7058a5f697f2642ceef8ee20fdd55e10
       stats.js:
         specifier: ^0.17.0
         version: 0.17.0
@@ -272,10 +269,6 @@ packages:
   '@types/webxr@0.5.16':
     resolution: {integrity: sha512-0E0Cl84FECtzrB4qG19TNTqpunw0F1YF0QZZnFMF6pDw1kNKJtrlTKlVB34stGIsHbZsYQ7H0tNjPfZftkHHoA==}
 
-  ammo.js@https://codeload.github.com/kripken/ammo.js/tar.gz/1ed8b58c7058a5f697f2642ceef8ee20fdd55e10:
-    resolution: {tarball: https://codeload.github.com/kripken/ammo.js/tar.gz/1ed8b58c7058a5f697f2642ceef8ee20fdd55e10}
-    version: 0.0.2
-
   ammojs-typed@1.0.6:
     resolution: {integrity: sha512-ut/tD0m5eEdlJ5KK97ma6SIEGZ4FN3AJTSVz8wl6C4EtnpVQdP70lOwgDMJKsHjTohxc2/xEZl6yJfMBZNlQ5w==}
 
@@ -494,8 +487,6 @@ snapshots:
       meshoptimizer: 0.18.1
 
   '@types/webxr@0.5.16': {}
-
-  ammo.js@https://codeload.github.com/kripken/ammo.js/tar.gz/1ed8b58c7058a5f697f2642ceef8ee20fdd55e10: {}
 
   ammojs-typed@1.0.6: {}
 

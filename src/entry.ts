@@ -161,8 +161,13 @@ class FPSGameApp {
       collisionConfiguration
     );
     this.physicsWorld.setGravity(new AmmoInstance.btVector3(0.0, -9.81, 0.0));
-    const fp = AmmoInstance.addFunction(this.PhysicsUpdate);
-    this.physicsWorld.setInternalTickCallback(fp);
+
+    /**
+     * Comment this would break "jump" feature, the `addFunction` not exist in three's build version.
+     */
+    // const fp = AmmoInstance.addFunction(this.PhysicsUpdate);
+    // this.physicsWorld.setInternalTickCallback(fp);
+
     this.physicsWorld
       .getBroadphase()
       .getOverlappingPairCache()
@@ -428,9 +433,9 @@ class FPSGameApp {
     );
   };
 
-  private PhysicsUpdate = (world: any, timeStep: any) => {
-    this.entityManager?.PhysicsUpdate(world, timeStep);
-  };
+  // private PhysicsUpdate = (world: any, timeStep: any) => {
+  //   this.entityManager?.PhysicsUpdate(world, timeStep);
+  // };
 
   private Step(elapsedTime: number) {
     this.physicsWorld?.stepSimulation(elapsedTime, 10);

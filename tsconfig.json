@@ -21,6 +21,9 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+
     "typeRoots": ["node_modules/ammojs-typed/ammo/ambient"]
   },
   "include": ["src"]

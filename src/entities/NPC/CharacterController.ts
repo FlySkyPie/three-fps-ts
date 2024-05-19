@@ -1,4 +1,4 @@
-import type Ammo from "ammo.js";
+import Ammo from "ammojs-typed";
 import * as THREE from "three";
 
 import type Entity from "../../Entity";
@@ -175,6 +175,7 @@ export default class CharacterController extends Component {
         collisionMask
       )
     ) {
+      // @ts-ignore The method exist, but not in type declaration.
       const body = AmmoInstance.castObject(
         rayInfo.collisionObject,
         AmmoInstance.btRigidBody

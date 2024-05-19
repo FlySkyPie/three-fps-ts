@@ -55,6 +55,7 @@ export default class LevelBulletDecals extends Component {
     const size = Math.random() * 0.3 + 0.2;
     this.scale.set(size, size, 1.0);
 
+    // @ts-ignore The method exist, but not in type declaration.
     const rigidBody = AmmoInstance.castObject(
       e.hitResult.collisionObject,
       AmmoInstance.btRigidBody

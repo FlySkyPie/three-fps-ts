@@ -213,10 +213,12 @@ export default class Weapon extends Component {
     if (
       AmmoHelper.CastRay(this.world, start, end, this.hitResult, collisionMask)
     ) {
+      // @ts-ignore The method exist, but not in type declaration.
       const ghostBody = AmmoInstance.castObject(
         this.hitResult.collisionObject,
         AmmoInstance.btPairCachingGhostObject
       );
+      // @ts-ignore The method exist, but not in type declaration.
       const rigidBody = AmmoInstance.castObject(
         this.hitResult.collisionObject,
         AmmoInstance.btRigidBody

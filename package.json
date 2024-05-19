@@ -10,7 +10,6 @@
     "tsc": "tsc"
   },
   "dependencies": {
-    "ammo.js": "kripken/ammo.js",
     "stats.js": "^0.17.0",
     "three": "^0.164.0",
     "three-pathfinding": "^1.3.0"

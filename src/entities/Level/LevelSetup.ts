@@ -1,4 +1,4 @@
-import type Ammo from "ammo.js";
+import Ammo from "ammojs-typed";
 import * as THREE from "three";
 
 import Component from "../../Component";

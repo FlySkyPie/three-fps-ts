@@ -1,9 +1,8 @@
-// import "ammojs-typed";
-import * as _Ammo from "ammo.js";
+import Ammo from "ammojs-typed";
 import * as THREE from "three";
 import { ConvexHull } from "three/examples/jsm/math/ConvexHull.js";
 
-export let AmmoInstance: _Ammo.IAmmo = null as any;
+export let AmmoInstance: typeof Ammo = null as any;
 let rayOrigin: any = null;
 let rayDest: any = null;
 let closestRayResultCallback: any = null;
@@ -22,7 +21,7 @@ export const CollisionFilterGroups = {
 
 export function createConvexHullShape(object: any) {
   const geometry = createConvexGeom(object);
-  let coords = (geometry.attributes.position as  THREE.BufferAttribute).array;
+  let coords = (geometry.attributes.position as THREE.BufferAttribute).array;
   let tempVec = new AmmoInstance!.btVector3(0, 0, 0);
   let shape = new AmmoInstance!.btConvexHullShape();
   for (let i = 0, il = coords.length; i < il; i += 3) {
@@ -60,7 +59,7 @@ function createConvexGeom(object: any) {
 
 export class AmmoHelper {
   static Init(callback = () => {}) {
-    _Ammo.default.call(this).then((ammo: any) => {
+    Ammo.call(this).then((ammo: typeof Ammo) => {
       AmmoInstance = ammo;
       callback();
     });
@@ -93,6 +92,7 @@ export class AmmoHelper {
 
   static IsTriggerOverlapping(ghostObj: any, rigidBody: any) {
     for (let i = 0; i < ghostObj.getNumOverlappingObjects(); i++) {
+      // @ts-ignore The method exist, but not in type declaration.
       const body = AmmoInstance!.castObject(
         ghostObj.getOverlappingObject(i),
         AmmoInstance!.btRigidBody
@@ -122,6 +122,7 @@ export class AmmoHelper {
     }
 
     // Reset closestRayResultCallback to reuse it
+    // @ts-ignore The method exist, but not in type declaration.
     const rayCallBack = AmmoInstance!.castObject(
       closestRayResultCallback,
       AmmoInstance!.RayResultCallback

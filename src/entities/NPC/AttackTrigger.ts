@@ -1,8 +1,9 @@
+import Ammo from "ammojs-typed";
+
 import Component from "../../Component";
-import Ammo from "ammo.js";
+import { AmmoInstance, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
 
 import type PlayerPhysics from "../Player/PlayerPhysics";
-import { AmmoInstance, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
 
 export default class AttackTrigger extends Component {
   name: string;
