@@ -15,18 +15,18 @@ importers:
         specifier: ^0.17.0
         version: 0.17.0
       three:
-        specifier: ^0.141.0
-        version: 0.141.0
+        specifier: ^0.143.0
+        version: 0.143.0
       three-pathfinding:
         specifier: ^1.3.0
-        version: 1.3.0(three@0.141.0)
+        version: 1.3.0(three@0.143.0)
     devDependencies:
       '@types/stats.js':
         specifier: ^0.17.3
         version: 0.17.3
       '@types/three':
-        specifier: ^0.141.0
-        version: 0.141.0
+        specifier: ^0.143.0
+        version: 0.143.2
       ammojs-typed:
         specifier: ^1.0.6
         version: 1.0.6
@@ -263,8 +263,8 @@ packages:
   '@types/stats.js@0.17.3':
     resolution: {integrity: sha512-pXNfAD3KHOdif9EQXZ9deK82HVNaXP5ZIF5RP2QG6OQFNTaY2YIetfrE9t528vEreGQvEPRDDc8muaoYeK0SxQ==}
 
-  '@types/three@0.141.0':
-    resolution: {integrity: sha512-OJdKDgTPVBUgc+s74DYoy4aLznbFFC38Xm4ElmU1YwGNgR7GGFVvFCX7lpVgOsT6S1zSJtGdajTsOYE8/xY9nA==}
+  '@types/three@0.143.2':
+    resolution: {integrity: sha512-HjsRWvd6rsXViFeOdU97/pHNDQknzJbFI0/5MrQ0joOlK0uixQH40sDJs/LwkNHhFYUvVENXAUQdKDeiQChHDw==}
 
   '@types/webxr@0.5.16':
     resolution: {integrity: sha512-0E0Cl84FECtzrB4qG19TNTqpunw0F1YF0QZZnFMF6pDw1kNKJtrlTKlVB34stGIsHbZsYQ7H0tNjPfZftkHHoA==}
@@ -315,8 +315,8 @@ packages:
     peerDependencies:
       three: 0.x.x
 
-  three@0.141.0:
-    resolution: {integrity: sha512-JaSDAPWuk4RTzG5BYRQm8YZbERUxTfTDVouWgHMisS2to4E5fotMS9F2zPFNOIJyEFTTQDDKPpsgZVThKU3pXA==}
+  three@0.143.0:
+    resolution: {integrity: sha512-oKcAGYHhJ46TGEuHjodo2n6TY2R6lbvrkp+feKZxqsUL/WkH7GKKaeu6RHeyb2Xjfk2dPLRKLsOP0KM2VgT8Zg==}
 
   typescript@5.4.5:
     resolution: {integrity: sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==}
@@ -474,7 +474,7 @@ snapshots:
 
   '@types/stats.js@0.17.3': {}
 
-  '@types/three@0.141.0':
+  '@types/three@0.143.2':
     dependencies:
       '@types/webxr': 0.5.16
 
@@ -549,11 +549,11 @@ snapshots:
 
   stats.js@0.17.0: {}
 
-  three-pathfinding@1.3.0(three@0.141.0):
+  three-pathfinding@1.3.0(three@0.143.0):
     dependencies:
-      three: 0.141.0
+      three: 0.143.0
 
-  three@0.141.0: {}
+  three@0.143.0: {}
 
   typescript@5.4.5: {}
 
