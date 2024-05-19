@@ -1,7 +1,7 @@
 // import "ammojs-typed";
 import * as _Ammo from "ammo.js";
 import * as THREE from "three";
-import { ConvexHull } from "three/examples/jsm/math/ConvexHull";
+import { ConvexHull } from "three/examples/jsm/math/ConvexHull.js";
 
 export let AmmoInstance: _Ammo.IAmmo = null as any;
 let rayOrigin: any = null;

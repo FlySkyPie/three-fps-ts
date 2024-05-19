@@ -10,10 +10,11 @@ import type Ammo from "ammojs-typed";
 import "ammojs-typed";
 import * as THREE from "three";
 import Stats from "stats.js";
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
-import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils";
+
+import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
+import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils.js";
 
 import { AmmoHelper, AmmoInstance, createConvexHullShape } from "./AmmoLib";
 import EntityManager from "./EntityManager";

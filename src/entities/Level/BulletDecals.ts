@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { DecalGeometry } from "three/examples/jsm/geometries/DecalGeometry";
+import { DecalGeometry } from "three/examples/jsm/geometries/DecalGeometry.js";
 
 import { AmmoInstance } from "../../AmmoLib";
 import Component from "../../Component";
