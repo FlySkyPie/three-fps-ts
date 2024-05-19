@@ -1,3 +1,4 @@
+import type { Scene } from "three";
 import type Ammo from "ammo.js";
 
 import type Entity from "../../Entity";
@@ -13,7 +14,7 @@ export default class AmmoBox extends Component {
 
   shape: any;
 
-  scene: THREE.Scene;
+  scene: Scene;
 
   world: Ammo.btDiscreteDynamicsWorld;
 
@@ -28,7 +29,7 @@ export default class AmmoBox extends Component {
   trigger?: Ammo.btPairCachingGhostObject;
 
   constructor(
-    scene: THREE.Scene,
+    scene: Scene,
     model: any,
     shape: any,
     physicsWorld: Ammo.btDiscreteDynamicsWorld
