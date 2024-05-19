@@ -15,18 +15,18 @@ importers:
         specifier: ^0.17.0
         version: 0.17.0
       three:
-        specifier: ^0.139.0
-        version: 0.139.2
+        specifier: ^0.141.0
+        version: 0.141.0
       three-pathfinding:
         specifier: ^1.3.0
-        version: 1.3.0(three@0.139.2)
+        version: 1.3.0(three@0.141.0)
     devDependencies:
       '@types/stats.js':
         specifier: ^0.17.3
         version: 0.17.3
       '@types/three':
-        specifier: ^0.139.0
-        version: 0.139.0
+        specifier: ^0.141.0
+        version: 0.141.0
       ammojs-typed:
         specifier: ^1.0.6
         version: 1.0.6
@@ -263,8 +263,11 @@ packages:
   '@types/stats.js@0.17.3':
     resolution: {integrity: sha512-pXNfAD3KHOdif9EQXZ9deK82HVNaXP5ZIF5RP2QG6OQFNTaY2YIetfrE9t528vEreGQvEPRDDc8muaoYeK0SxQ==}
 
-  '@types/three@0.139.0':
-    resolution: {integrity: sha512-4V/jZhyq7Mv05coUzxL3bz8AuBOSi/1F0RY7ujisHTV0Amy/fnYJ+s7TSJ1/hXjZukSkpuFRgV+wvWUEMbsMbQ==}
+  '@types/three@0.141.0':
+    resolution: {integrity: sha512-OJdKDgTPVBUgc+s74DYoy4aLznbFFC38Xm4ElmU1YwGNgR7GGFVvFCX7lpVgOsT6S1zSJtGdajTsOYE8/xY9nA==}
+
+  '@types/webxr@0.5.16':
+    resolution: {integrity: sha512-0E0Cl84FECtzrB4qG19TNTqpunw0F1YF0QZZnFMF6pDw1kNKJtrlTKlVB34stGIsHbZsYQ7H0tNjPfZftkHHoA==}
 
   ammo.js@https://codeload.github.com/kripken/ammo.js/tar.gz/1ed8b58c7058a5f697f2642ceef8ee20fdd55e10:
     resolution: {tarball: https://codeload.github.com/kripken/ammo.js/tar.gz/1ed8b58c7058a5f697f2642ceef8ee20fdd55e10}
@@ -312,8 +315,8 @@ packages:
     peerDependencies:
       three: 0.x.x
 
-  three@0.139.2:
-    resolution: {integrity: sha512-gV7q7QY8rogu7HLFZR9cWnOQAUedUhu2WXAnpr2kdXZP9YDKsG/0ychwQvWkZN5PlNw9mv5MoCTin6zNTXoONg==}
+  three@0.141.0:
+    resolution: {integrity: sha512-JaSDAPWuk4RTzG5BYRQm8YZbERUxTfTDVouWgHMisS2to4E5fotMS9F2zPFNOIJyEFTTQDDKPpsgZVThKU3pXA==}
 
   typescript@5.4.5:
     resolution: {integrity: sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==}
@@ -471,7 +474,11 @@ snapshots:
 
   '@types/stats.js@0.17.3': {}
 
-  '@types/three@0.139.0': {}
+  '@types/three@0.141.0':
+    dependencies:
+      '@types/webxr': 0.5.16
+
+  '@types/webxr@0.5.16': {}
 
   ammo.js@https://codeload.github.com/kripken/ammo.js/tar.gz/1ed8b58c7058a5f697f2642ceef8ee20fdd55e10: {}
 
@@ -542,11 +549,11 @@ snapshots:
 
   stats.js@0.17.0: {}
 
-  three-pathfinding@1.3.0(three@0.139.2):
+  three-pathfinding@1.3.0(three@0.141.0):
     dependencies:
-      three: 0.139.2
+      three: 0.141.0
 
-  three@0.139.2: {}
+  three@0.141.0: {}
 
   typescript@5.4.5: {}
 
