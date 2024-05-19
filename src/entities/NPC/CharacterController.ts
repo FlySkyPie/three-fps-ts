@@ -176,7 +176,7 @@ export default class CharacterController extends Component {
       )
     ) {
       // @ts-ignore The method exist, but not in type declaration.
-      const body = AmmoInstance.castObject(
+      const body: Ammo.btRigidBody = AmmoInstance.castObject(
         rayInfo.collisionObject,
         AmmoInstance.btRigidBody
       );

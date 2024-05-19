@@ -65,12 +65,12 @@ export default class PlayerPhysics extends Component {
     for (let i = 0; i < numManifolds; i++) {
       const contactManifold = dispatcher.getManifoldByIndexInternal(i);
       // @ts-ignore The method exist, but not in type declaration.
-      const rb0 = AmmoInstance.castObject(
+      const rb0: Ammo.btRigidBody = AmmoInstance.castObject(
         contactManifold.getBody0(),
         AmmoInstance.btRigidBody
       );
       // @ts-ignore The method exist, but not in type declaration.
-      const rb1 = AmmoInstance.castObject(
+      const rb1: Ammo.btRigidBody = AmmoInstance.castObject(
         contactManifold.getBody1(),
         AmmoInstance.btRigidBody
       );

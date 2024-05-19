@@ -61,6 +61,9 @@ export class AmmoHelper {
   static Init(callback = () => {}) {
     Ammo.call(this).then((ammo: typeof Ammo) => {
       AmmoInstance = ammo;
+
+      console.log(AmmoInstance);
+      console.log((AmmoInstance as any).Runtime);
       callback();
     });
   }
@@ -93,7 +96,7 @@ export class AmmoHelper {
   static IsTriggerOverlapping(ghostObj: any, rigidBody: any) {
     for (let i = 0; i < ghostObj.getNumOverlappingObjects(); i++) {
       // @ts-ignore The method exist, but not in type declaration.
-      const body = AmmoInstance!.castObject(
+      const body: Ammo.btRigidBody = AmmoInstance!.castObject(
         ghostObj.getOverlappingObject(i),
         AmmoInstance!.btRigidBody
       );
