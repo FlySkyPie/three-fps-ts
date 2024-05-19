@@ -68,6 +68,13 @@ import AmmoBox from "./entities/AmmoBox/AmmoBox";
 import LevelBulletDecals from "./entities/Level/BulletDecals";
 import PlayerHealth from "./entities/Player/PlayerHealth";
 
+type ILoader =
+  | FBXLoader
+  | GLTFLoader
+  | OBJLoader
+  | THREE.TextureLoader
+  | THREE.AudioLoader;
+
 class FPSGameApp {
   lastFrameTime: number | null;
 
@@ -182,7 +189,7 @@ class FPSGameApp {
     return Promise.all(proms);
   }
 
-  private async AddAsset(asset: string, loader: THREE.Loader, name: string) {
+  private async AddAsset(asset: string, loader: ILoader, name: string) {
     const result = await loader.loadAsync(asset);
     this.assets[name] = result;
   }

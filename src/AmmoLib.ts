@@ -22,7 +22,7 @@ export const CollisionFilterGroups = {
 
 export function createConvexHullShape(object: any) {
   const geometry = createConvexGeom(object);
-  let coords = geometry.attributes.position.array;
+  let coords = (geometry.attributes.position as  THREE.BufferAttribute).array;
   let tempVec = new AmmoInstance!.btVector3(0, 0, 0);
   let shape = new AmmoInstance!.btConvexHullShape();
   for (let i = 0, il = coords.length; i < il; i += 3) {

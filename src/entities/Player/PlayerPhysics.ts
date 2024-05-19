@@ -4,7 +4,7 @@ import Component from "../../Component";
 import { AmmoInstance } from "../../AmmoLib";
 
 //Bullet enums
-const CF_KINEMATIC_OBJECT = 2;
+// const CF_KINEMATIC_OBJECT = 2;
 const DISABLE_DEACTIVATION = 4;
 
 export default class PlayerPhysics extends Component {

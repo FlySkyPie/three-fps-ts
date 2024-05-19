@@ -13,7 +13,7 @@ export default class PlayerHealth extends Component {
     this.health = 100;
   }
 
-  TakeHit = (e: any) => {
+  TakeHit = () => {
     this.health = Math.max(0, this.health - 10);
     this.uimanager?.SetHealth(this.health);
   };

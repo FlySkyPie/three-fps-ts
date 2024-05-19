@@ -26,7 +26,7 @@ export default class DirectionDebug extends Component {
     this.scene.add(this.arrowHelper);
   }
 
-  Update(t: number) {
+  Update() {
     this.dir.copy(this.forwardVec);
     this.dir.applyQuaternion(this.parent!.rotation);
     this.arrowHelper?.position.copy(this.parent!.position);

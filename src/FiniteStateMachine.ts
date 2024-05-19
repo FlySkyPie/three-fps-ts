@@ -1,4 +1,4 @@
-import type CharacterFSM from "./entities/NPC/CharacterFSM";
+// import type CharacterFSM from "./entities/NPC/CharacterFSM";
 
 class FiniteStateMachine {
   states: Record<string, State<FiniteStateMachine>>;

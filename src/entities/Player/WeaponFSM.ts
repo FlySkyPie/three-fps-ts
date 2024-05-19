@@ -45,7 +45,7 @@ class IdleState extends State<WeaponFSM> {
     action.play();
   }
 
-  Update(t: number) {
+  Update() {
     if (this.parent.proxy.shoot && this.parent.proxy.magAmmo > 0) {
       this.parent.SetState("shoot");
     }
@@ -78,7 +78,7 @@ class ShootState extends State<WeaponFSM> {
     action.play();
   }
 
-  Update(t: number) {
+  Update() {
     if (!this.parent.proxy.shoot || this.parent.proxy.magAmmo == 0) {
       this.parent.SetState("idle");
     }

@@ -113,7 +113,7 @@ export default class Weapon extends Component {
     this.shotSound.setLoop(false);
   }
 
-  AmmoPickup = (e: any) => {
+  AmmoPickup = () => {
     this.ammo += 30;
     this.uimanager?.SetAmmo(this.magAmmo, this.ammo);
   };
