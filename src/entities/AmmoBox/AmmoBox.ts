@@ -8,25 +8,25 @@ import { AmmoInstance, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
 import type PlayerPhysics from "../Player/PlayerPhysics";
 
 export default class AmmoBox extends Component {
-  name: string;
+  public name: string;
 
-  model: any;
+  private model: any;
 
-  shape: any;
+  private shape: any;
 
-  scene: Scene;
+  private scene: Scene;
 
-  world: Ammo.btDiscreteDynamicsWorld;
+  private world: Ammo.btDiscreteDynamicsWorld;
 
-  quat: Ammo.btQuaternion;
+  private quat: Ammo.btQuaternion;
 
-  update: boolean;
+  private update: boolean;
 
-  player?: Entity;
+  private player?: Entity;
 
-  playerPhysics?: PlayerPhysics;
+  private playerPhysics?: PlayerPhysics;
 
-  trigger?: Ammo.btPairCachingGhostObject;
+  private trigger?: Ammo.btPairCachingGhostObject;
 
   constructor(
     scene: Scene,

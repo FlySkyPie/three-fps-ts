@@ -5,13 +5,13 @@ import Component from "../../Component";
 import { AmmoInstance, createConvexHullShape } from "../../AmmoLib";
 
 export default class LevelSetup extends Component {
-  scene: THREE.Scene;
+  public name: string;
 
-  physicsWorld: Ammo.btDiscreteDynamicsWorld;
+  private scene: THREE.Scene;
 
-  name: string;
+  private physicsWorld: Ammo.btDiscreteDynamicsWorld;
 
-  mesh: any;
+  private mesh: any;
 
   constructor(
     mesh: any,

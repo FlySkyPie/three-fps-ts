@@ -5,7 +5,7 @@ import { FiniteStateMachine, State } from "../../FiniteStateMachine";
 import type Weapon from "./Weapon";
 
 export default class WeaponFSM extends FiniteStateMachine {
-  proxy: Weapon;
+  public proxy: Weapon;
 
   constructor(proxy: Weapon) {
     super();

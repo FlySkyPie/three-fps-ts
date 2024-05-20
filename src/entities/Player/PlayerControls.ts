@@ -8,49 +8,49 @@ import { AmmoInstance } from "../../AmmoLib";
 import type PlayerPhysics from "./PlayerPhysics";
 
 export default class PlayerControls extends Component {
-  name: string;
+  public name: string;
 
-  camera: THREE.PerspectiveCamera;
+  private camera: THREE.PerspectiveCamera;
 
-  timeZeroToMax: number;
+  private timeZeroToMax: number;
 
-  maxSpeed: number;
+  private maxSpeed: number;
 
-  speed: THREE.Vector3;
+  private speed: THREE.Vector3;
 
-  acceleration: number;
+  private acceleration: number;
 
-  decceleration: number;
+  private decceleration: number;
 
-  mouseSpeed: number;
+  private mouseSpeed: number;
 
-  physicsComponent: PlayerPhysics | null;
+  private physicsComponent: PlayerPhysics | null;
 
-  isLocked: boolean;
+  private isLocked: boolean;
 
-  angles: THREE.Euler;
+  private angles: THREE.Euler;
 
-  pitch: THREE.Quaternion;
+  private pitch: THREE.Quaternion;
 
-  yaw: THREE.Quaternion;
+  private yaw: THREE.Quaternion;
 
-  jumpVelocity: number;
+  private jumpVelocity: number;
 
-  yOffset: number;
+  private yOffset: number;
 
-  tempVec: THREE.Vector3;
+  private tempVec: THREE.Vector3;
 
-  moveDir: THREE.Vector3;
+  private moveDir: THREE.Vector3;
 
-  xAxis: THREE.Vector3;
+  private xAxis: THREE.Vector3;
 
-  yAxis: THREE.Vector3;
+  private yAxis: THREE.Vector3;
 
-  physicsBody: Ammo.btRigidBody | null = null;
+  private physicsBody: Ammo.btRigidBody | null = null;
 
-  transform?: Ammo.btTransform;
+  private transform?: Ammo.btTransform;
 
-  zeroVec?: Ammo.btVector3;
+  private zeroVec?: Ammo.btVector3;
 
   constructor(camera: THREE.PerspectiveCamera) {
     super();

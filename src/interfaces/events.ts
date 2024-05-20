@@ -18,10 +18,12 @@ export interface INavEndEvent {
 
 export interface IBulletHitEvent {
   topic: "hit";
-  from: Entity | null;
-  amount: number;
 
-  hitResult: {
+  from?: Entity | null;
+
+  amount?: number;
+
+  hitResult?: {
     intersectionPoint: Vector3;
     intersectionNormal: Vector3;
 

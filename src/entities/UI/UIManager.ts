@@ -1,7 +1,7 @@
 import Component from "../../Component";
 
 export default class UIManager extends Component {
-  name: string;
+  public name: string;
 
   constructor() {
     super();

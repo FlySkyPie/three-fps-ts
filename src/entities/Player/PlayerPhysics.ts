@@ -8,17 +8,17 @@ import { AmmoInstance } from "../../AmmoLib";
 const DISABLE_DEACTIVATION = 4;
 
 export default class PlayerPhysics extends Component {
-  world: Ammo.btDiscreteDynamicsWorld;
+  public body: Ammo.btRigidBody | null = null;
 
-  body: Ammo.btRigidBody | null = null;
+  public name: string;
 
-  name: string;
+  public canJump: boolean;
 
-  canJump: boolean;
+  private world: Ammo.btDiscreteDynamicsWorld;
 
-  up: Ammo.btVector3;
+  private up: Ammo.btVector3;
 
-  tempVec: Ammo.btVector3;
+  private tempVec: Ammo.btVector3;
 
   constructor(world: Ammo.btDiscreteDynamicsWorld) {
     super();

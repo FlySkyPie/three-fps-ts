@@ -4,15 +4,15 @@ import Component from "../../Component";
 import { Pathfinding } from "three-pathfinding";
 
 export default class Navmesh extends Component {
-  scene: THREE.Scene;
+  public name: string;
 
-  name: string;
+  private scene: THREE.Scene;
 
-  zone: string;
+  private zone: string;
 
-  mesh: any;
+  private mesh: any;
 
-  pathfinding?: Pathfinding;
+  private pathfinding?: Pathfinding;
 
   constructor(scene: THREE.Scene, mesh: any) {
     super();

@@ -14,55 +14,55 @@ import type AttackTrigger from "./AttackTrigger";
 import CharacterFSM from "./CharacterFSM";
 
 export default class CharacterController extends Component {
-  name: string;
+  public name: string;
 
-  physicsWorld: Ammo.btDiscreteDynamicsWorld;
+  public model: any;
 
-  scene: THREE.Scene;
+  public path: any[];
 
-  mixer: THREE.AnimationMixer | null = null;
+  public canMove: boolean;
 
-  clips: Record<string, any>;
+  public animations: Record<string, { clip: any; action: any }>;
 
-  animations: Record<string, { clip: any; action: any }>;
+  private physicsWorld: Ammo.btDiscreteDynamicsWorld;
 
-  model: any;
+  private scene: THREE.Scene;
 
-  dir: THREE.Vector3;
+  private mixer: THREE.AnimationMixer | null = null;
 
-  forwardVec: THREE.Vector3;
+  private clips: Record<string, any>;
 
-  pathDebug: DebugShapes;
+  private dir: THREE.Vector3;
 
-  path: any[];
+  private forwardVec: THREE.Vector3;
 
-  tempRot: THREE.Quaternion;
+  private pathDebug: DebugShapes;
 
-  viewAngle: number;
+  private tempRot: THREE.Quaternion;
 
-  maxViewDistance: number;
+  private viewAngle: number;
 
-  tempVec: THREE.Vector3;
+  private maxViewDistance: number;
 
-  attackDistance: number;
+  private tempVec: THREE.Vector3;
 
-  canMove: boolean;
+  private attackDistance: number;
 
-  health: number;
+  private health: number;
 
-  stateMachine?: CharacterFSM;
+  private stateMachine?: CharacterFSM;
 
-  navmesh?: Navmesh;
+  private navmesh?: Navmesh;
 
-  hitbox?: AttackTrigger;
+  private hitbox?: AttackTrigger;
 
-  player?: Entity;
+  private player?: Entity;
 
-  skinnedmesh: any;
+  private skinnedmesh: any;
 
-  rootBone: any;
+  private rootBone: any;
 
-  lastPos: any;
+  private lastPos: any;
 
   constructor(
     model: THREE.Object3D,
@@ -110,7 +110,7 @@ export default class CharacterController extends Component {
     this.hitbox = this.GetComponent<AttackTrigger>("AttackTrigger");
     this.player = this.FindEntity<Entity>("Player");
 
-    this.parent?.RegisterEventHandler(this.TakeHit, "hit");
+    this.parent?.RegisterEventHandler(this.TakeHit as any, "hit");
 
     const scene = this.model;
 
@@ -240,7 +240,7 @@ export default class CharacterController extends Component {
   }
 
   private TakeHit = (msg: IBulletHitEvent) => {
-    this.health = Math.max(0, this.health - msg.amount);
+    this.health = Math.max(0, this.health - msg.amount!);
 
     if (this.health == 0) {
       this.stateMachine?.SetState("dead");

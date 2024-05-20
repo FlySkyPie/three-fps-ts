@@ -16,19 +16,19 @@ type ICollision = {
 };
 
 export default class CharacterCollision extends Component {
-  world: Ammo.btDiscreteDynamicsWorld;
+  private world: Ammo.btDiscreteDynamicsWorld;
 
-  bonePos: THREE.Vector3;
+  private bonePos: THREE.Vector3;
 
-  boneRot: THREE.Quaternion;
+  private boneRot: THREE.Quaternion;
 
-  globalRot: Ammo.btQuaternion;
+  private globalRot: Ammo.btQuaternion;
 
-  collisions: Record<string, ICollision>;
+  private collisions: Record<string, ICollision>;
 
-  controller?: CharacterController;
+  private controller?: CharacterController;
 
-  mesh: any;
+  private mesh: any;
 
   constructor(physicsWorld: Ammo.btDiscreteDynamicsWorld) {
     super();

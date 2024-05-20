@@ -23,11 +23,11 @@ export default class CharacterFSM extends FiniteStateMachine {
 }
 
 class IdleState extends State<CharacterFSM> {
-  maxWaitTime: number;
+  private maxWaitTime: number;
 
-  minWaitTime: number;
+  private minWaitTime: number;
 
-  waitTime: number;
+  private waitTime: number;
 
   constructor(parent: CharacterFSM) {
     super(parent);
@@ -114,15 +114,15 @@ class PatrolState extends State<CharacterFSM> {
 }
 
 class ChaseState extends State<CharacterFSM> {
-  updateFrequency: number;
+  private updateFrequency: number;
 
-  updateTimer: number;
+  private updateTimer: number;
 
-  attackDistance: number;
+  private attackDistance: number;
 
-  shouldRotate: boolean;
+  private shouldRotate: boolean;
 
-  switchDelay: number;
+  private switchDelay: number;
 
   constructor(parent: CharacterFSM) {
     super(parent);
@@ -184,11 +184,11 @@ class ChaseState extends State<CharacterFSM> {
 }
 
 class AttackState extends State<CharacterFSM> {
-  attackTime: number;
+  private attackTime: number;
 
-  canHit: boolean;
+  private canHit: boolean;
 
-  attackEvent: number = NaN;
+  private attackEvent: number = NaN;
 
   constructor(parent: CharacterFSM) {
     super(parent);

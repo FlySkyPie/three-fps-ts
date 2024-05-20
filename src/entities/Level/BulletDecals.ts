@@ -6,21 +6,21 @@ import Component from "../../Component";
 import { IBulletHitEvent } from "../../interfaces/events";
 
 export default class LevelBulletDecals extends Component {
-  name: string;
+  public name: string;
 
-  scene: THREE.Scene;
+  private scene: THREE.Scene;
 
-  rot: THREE.Euler;
+  private rot: THREE.Euler;
 
-  mat4: THREE.Matrix4;
+  private mat4: THREE.Matrix4;
 
-  position: THREE.Vector3;
+  private position: THREE.Vector3;
 
-  up: THREE.Vector3;
+  private up: THREE.Vector3;
 
-  scale: THREE.Vector3;
+  private scale: THREE.Vector3;
 
-  material: THREE.MeshStandardMaterial;
+  private material: THREE.MeshStandardMaterial;
 
   constructor(
     scene: THREE.Scene,
@@ -50,7 +50,7 @@ export default class LevelBulletDecals extends Component {
   }
 
   private Hit = (e: IBulletHitEvent) => {
-    this.mat4.lookAt(this.position, e.hitResult.intersectionNormal, this.up);
+    this.mat4.lookAt(this.position, e.hitResult!.intersectionNormal, this.up);
     this.rot.setFromRotationMatrix(this.mat4);
 
     const size = Math.random() * 0.3 + 0.2;
@@ -58,7 +58,7 @@ export default class LevelBulletDecals extends Component {
 
     // @ts-ignore The method exist, but not in type declaration.
     const rigidBody: Ammo.btRigidBody = AmmoInstance.castObject(
-      e.hitResult.collisionObject,
+      e.hitResult!.collisionObject,
       AmmoInstance.btRigidBody
     );
     const mesh = rigidBody.mesh;
@@ -66,7 +66,7 @@ export default class LevelBulletDecals extends Component {
     const m = new THREE.Mesh(
       new DecalGeometry(
         mesh,
-        e.hitResult.intersectionPoint,
+        e.hitResult!.intersectionPoint,
         this.rot,
         this.scale
       ),
@@ -76,6 +76,6 @@ export default class LevelBulletDecals extends Component {
   };
 
   Initialize() {
-    this.parent?.RegisterEventHandler(this.Hit, "hit");
+    this.parent?.RegisterEventHandler(this.Hit as any, "hit");
   }
 }

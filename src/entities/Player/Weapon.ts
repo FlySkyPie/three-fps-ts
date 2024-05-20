@@ -10,47 +10,47 @@ import type UIManager from "../UI/UIManager";
 import WeaponFSM from "./WeaponFSM";
 
 export default class Weapon extends Component {
-  name: string;
+  public name: string;
 
-  camera: THREE.PerspectiveCamera;
+  public mixer?: THREE.AnimationMixer;
 
-  world: Ammo.btDiscreteDynamicsWorld;
+  public animations: Record<string, any>;
 
-  model: any;
+  public shoot: boolean;
 
-  flash: any;
+  public magAmmo: number;
 
-  animations: Record<string, any>;
+  private camera: THREE.PerspectiveCamera;
 
-  shoot: boolean;
+  private world: Ammo.btDiscreteDynamicsWorld;
 
-  fireRate: number;
+  private model: any;
 
-  shootTimer: number;
+  private flash: any;
 
-  shotSoundBuffer: any;
+  private fireRate: number;
 
-  audioListner: THREE.AudioListener;
+  private shootTimer: number;
 
-  magAmmo: number;
+  private shotSoundBuffer: any;
 
-  ammoPerMag: number;
+  private audioListner: THREE.AudioListener;
 
-  ammo: number;
+  private ammoPerMag: number;
 
-  damage: number;
+  private ammo: number;
 
-  uimanager: UIManager | null = null;
+  private damage: number;
 
-  reloading: boolean;
+  private uimanager: UIManager | null = null;
 
-  hitResult: Record<string, any>;
+  private reloading: boolean;
 
-  mixer?: THREE.AnimationMixer;
+  private hitResult: Record<string, any>;
 
-  shotSound?: THREE.Audio;
+  private shotSound?: THREE.Audio;
 
-  stateMachine?: WeaponFSM;
+  private stateMachine?: WeaponFSM;
 
   constructor(
     camera: THREE.PerspectiveCamera,

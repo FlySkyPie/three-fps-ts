@@ -154,7 +154,10 @@ class FPSGameApp {
     this.mutantAnims[name] = clip;
   }
 
-  private PromiseProgress(proms: any, progress_cb: any) {
+  private PromiseProgress(
+    proms: Promise<void>[],
+    progress_cb: (value: number) => void
+  ) {
     let d = 0;
     progress_cb(0);
     for (const p of proms) {

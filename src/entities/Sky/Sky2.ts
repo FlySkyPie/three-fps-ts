@@ -2,11 +2,11 @@ import * as THREE from "three";
 import Component from "../../Component";
 
 export default class Sky extends Component {
-  scene: THREE.Scene;
+  private scene: THREE.Scene;
 
-  name: string;
+  public name: string;
 
-  texture: any;
+  private texture: any;
 
   constructor(scene: THREE.Scene, skyTexture: any) {
     super();

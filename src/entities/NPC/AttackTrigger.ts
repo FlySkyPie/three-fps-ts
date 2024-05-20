@@ -6,19 +6,19 @@ import { AmmoInstance, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
 import type PlayerPhysics from "../Player/PlayerPhysics";
 
 export default class AttackTrigger extends Component {
-  name: string;
+  public name: string;
 
-  physicsWorld: Ammo.btDiscreteDynamicsWorld;
+  public overlapping: boolean;
 
-  localTransform: Ammo.btTransform;
+  private physicsWorld: Ammo.btDiscreteDynamicsWorld;
 
-  quat: Ammo.btQuaternion;
+  private localTransform: Ammo.btTransform;
 
-  overlapping: boolean;
+  private quat: Ammo.btQuaternion;
 
-  ghostObj?: Ammo.btPairCachingGhostObject;
+  private ghostObj?: Ammo.btPairCachingGhostObject;
 
-  playerPhysics?: PlayerPhysics;
+  private playerPhysics?: PlayerPhysics;
 
   constructor(physicsWorld: Ammo.btDiscreteDynamicsWorld) {
     super();

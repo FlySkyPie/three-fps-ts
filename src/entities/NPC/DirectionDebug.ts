@@ -2,15 +2,15 @@ import * as THREE from "three";
 import Component from "../../Component";
 
 export default class DirectionDebug extends Component {
-  name: string;
+  public name: string;
 
-  scene:  THREE.Scene;
+  private scene: THREE.Scene;
 
-  dir: THREE.Vector3;
+  private dir: THREE.Vector3;
 
-  forwardVec: THREE.Vector3;
+  private forwardVec: THREE.Vector3;
 
-  arrowHelper?: THREE.ArrowHelper;
+  private arrowHelper?: THREE.ArrowHelper;
 
   constructor(scene: THREE.Scene) {
     super();
