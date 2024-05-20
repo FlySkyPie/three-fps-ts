@@ -1,9 +1,9 @@
 // import type CharacterFSM from "./entities/NPC/CharacterFSM";
 
 class FiniteStateMachine {
-  states: Record<string, State<FiniteStateMachine>>;
+  public currentState: State<FiniteStateMachine> | null;
 
-  currentState: State<FiniteStateMachine> | null;
+  private states: Record<string, State<FiniteStateMachine>>;
 
   constructor() {
     this.states = {};

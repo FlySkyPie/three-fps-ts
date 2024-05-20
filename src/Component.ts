@@ -2,9 +2,9 @@ import type { INavEndEvent, IShootEvent } from "./interfaces/events";
 import type Entity from "./Entity";
 
 export default abstract class Component<ParentType extends Entity = Entity> {
-  name: string = "Unknown Component";
+  public name: string = "Unknown Component";
 
-  parent: ParentType | null;
+  public parent: ParentType | null;
 
   constructor() {
     this.parent = null;

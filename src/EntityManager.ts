@@ -1,7 +1,7 @@
 import type Entity from "./Entity";
 
 export default class EntityManager {
-  ids: number;
+  private ids: number;
 
   private entities: Entity[];
 

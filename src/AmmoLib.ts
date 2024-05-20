@@ -58,7 +58,7 @@ function createConvexGeom(object: any) {
 }
 
 export class AmmoHelper {
-  static Init(callback = () => {}) {
+  public static Init(callback = () => {}) {
     Ammo.call(this).then((ammo: typeof Ammo) => {
       AmmoInstance = ammo;
 
@@ -68,7 +68,7 @@ export class AmmoHelper {
     });
   }
 
-  static CreateTrigger(shape: any, position?: any, rotation?: any) {
+  public static CreateTrigger(shape: any, position?: any, rotation?: any) {
     const transform = new AmmoInstance!.btTransform();
     transform.setIdentity();
     position &&
@@ -93,7 +93,7 @@ export class AmmoHelper {
     return ghostObj;
   }
 
-  static IsTriggerOverlapping(
+  public static IsTriggerOverlapping(
     ghostObj: Ammo.btPairCachingGhostObject,
     rigidBody: Ammo.btRigidBody
   ) {
@@ -111,7 +111,7 @@ export class AmmoHelper {
     return false;
   }
 
-  static CastRay(
+  public static CastRay(
     world: Ammo.btDiscreteDynamicsWorld,
     origin: any,
     dest: THREE.Vector3,

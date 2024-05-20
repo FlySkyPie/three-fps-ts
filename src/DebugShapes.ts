@@ -2,9 +2,9 @@ import type { Scene } from "three";
 import { Mesh, MeshBasicMaterial, SphereGeometry } from "three";
 
 export default class DebugShapes {
-  meshes: Mesh<SphereGeometry, MeshBasicMaterial>[];
+  private meshes: Mesh<SphereGeometry, MeshBasicMaterial>[];
 
-  pointGeom: SphereGeometry;
+  private pointGeom: SphereGeometry;
 
   constructor(public scene: Scene) {
     this.meshes = [];

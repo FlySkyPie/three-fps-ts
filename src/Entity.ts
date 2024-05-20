@@ -5,9 +5,7 @@ import type Component from "./Component";
 import type EntityManager from "./EntityManager";
 
 export default class Entity {
-  id: number = NaN;
-
-  private name: number | string | null;
+  public id: number = NaN;
 
   public components: Record<string, Component>;
 
@@ -15,9 +13,11 @@ export default class Entity {
 
   public rotation: Quaternion;
 
+  private name: number | string | null;
+
   private parent: EntityManager | null;
 
-  eventHandlers: Record<string, ((e: IEvent) => void)[]>;
+  private eventHandlers: Record<string, ((e: IEvent) => void)[]>;
 
   constructor() {
     this.name = null;
