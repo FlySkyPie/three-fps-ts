@@ -108,7 +108,7 @@ export default class PlayerControls extends Component {
     this.isLocked = false;
   };
 
-  private OnMouseMove = (event: any) => {
+  private OnMouseMove = (event: MouseEvent) => {
     if (!this.isLocked) {
       return;
     }
@@ -135,7 +135,7 @@ export default class PlayerControls extends Component {
     this.camera.quaternion.copy(this.parent!.Rotation);
   }
 
-  private Accelarate = (direction: any, t: any) => {
+  private Accelarate = (direction: THREE.Vector3, t: number) => {
     const accel = this.tempVec
       .copy(direction)
       .multiplyScalar(this.acceleration * t);

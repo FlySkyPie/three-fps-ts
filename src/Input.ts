@@ -5,7 +5,7 @@ type IEvent = {
 };
 
 class Input {
-  private _keyMap: Record<string, number>;
+  private _keyMap: Record<string, 0 | 1>;
 
   private events: IEvent[];
 
@@ -26,35 +26,35 @@ class Input {
     this.events.push({ element, type, callback });
   }
 
-  public AddKeyDownListner(callback: any) {
+  public AddKeyDownListner(callback: (e: KeyboardEvent) => void) {
     this._addEventListner(document, "keydown", callback);
   }
 
-  public AddKeyUpListner(callback: any) {
+  public AddKeyUpListner(callback: (e: KeyboardEvent) => void) {
     this._addEventListner(document, "keyup", callback);
   }
 
-  public AddMouseMoveListner(callback: any) {
+  public AddMouseMoveListner(callback: (e: MouseEvent) => void) {
     this._addEventListner(document, "mousemove", callback);
   }
 
-  public AddClickListner(callback: any) {
+  public AddClickListner(callback: (e: PointerEvent) => void) {
     this._addEventListner(document.body, "click", callback);
   }
 
-  public AddMouseDownListner(callback: any) {
+  public AddMouseDownListner(callback: (e: MouseEvent) => void) {
     this._addEventListner(document.body, "mousedown", callback);
   }
 
-  public AddMouseUpListner(callback: any) {
+  public AddMouseUpListner(callback: (e: MouseEvent) => void) {
     this._addEventListner(document.body, "mouseup", callback);
   }
 
-  private _onKeyDown = (event: any) => {
+  private _onKeyDown = (event: KeyboardEvent) => {
     this._keyMap[event.code] = 1;
   };
 
-  private _onKeyUp = (event: any) => {
+  private _onKeyUp = (event: KeyboardEvent) => {
     this._keyMap[event.code] = 0;
   };
 

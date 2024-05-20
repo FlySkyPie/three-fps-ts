@@ -1,6 +1,7 @@
 import Ammo from "ammojs-typed";
 import * as THREE from "three";
 
+import type { IBulletHitEvent } from "../../interfaces/events";
 import type Entity from "../../Entity";
 import Component from "../../Component";
 import { AmmoInstance, AmmoHelper, CollisionFilterGroups } from "../../AmmoLib";
@@ -211,7 +212,7 @@ export default class CharacterController extends Component {
         */
   }
 
-  FacePlayer(t: any, rate = 3.0) {
+  FacePlayer(t: number, rate = 3.0) {
     this.tempVec.copy(this.player!.Position).sub(this.model.position);
     this.tempVec.y = 0.0;
     this.tempVec.normalize();
@@ -238,7 +239,7 @@ export default class CharacterController extends Component {
     this.player?.Broadcast({ topic: "hit" });
   }
 
-  private TakeHit = (msg: any) => {
+  private TakeHit = (msg: IBulletHitEvent) => {
     this.health = Math.max(0, this.health - msg.amount);
 
     if (this.health == 0) {
@@ -251,7 +252,7 @@ export default class CharacterController extends Component {
     }
   };
 
-  private MoveAlongPath(t: any) {
+  private MoveAlongPath(t: number) {
     if (!this.path?.length) return;
 
     const target = this.path[0].clone().sub(this.model.position);

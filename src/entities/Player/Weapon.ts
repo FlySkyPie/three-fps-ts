@@ -86,7 +86,7 @@ export default class Weapon extends Component {
     };
   }
 
-  SetAnim(name: any, clip: any) {
+  SetAnim(name: string, clip: any) {
     const action = this.mixer!.clipAction(clip);
     this.animations[name] = { clip, action };
   }
@@ -158,7 +158,7 @@ export default class Weapon extends Component {
   }
 
   SetupInput() {
-    Input.AddMouseDownListner((e: any) => {
+    Input.AddMouseDownListner((e: MouseEvent) => {
       if (e.button != 0 || this.reloading) {
         return;
       }
@@ -167,7 +167,7 @@ export default class Weapon extends Component {
       this.shootTimer = 0.0;
     });
 
-    Input.AddMouseUpListner((e: any) => {
+    Input.AddMouseUpListner((e: MouseEvent) => {
       if (e.button != 0) {
         return;
       }
@@ -175,7 +175,7 @@ export default class Weapon extends Component {
       this.shoot = false;
     });
 
-    Input.AddKeyDownListner((e: any) => {
+    Input.AddKeyDownListner((e: KeyboardEvent) => {
       if (e.repeat) return;
 
       if (e.code == "KeyR") {
@@ -235,7 +235,7 @@ export default class Weapon extends Component {
     }
   }
 
-  Shoot(t: any) {
+  Shoot(t: number) {
     if (!this.shoot) {
       return;
     }
@@ -266,7 +266,7 @@ export default class Weapon extends Component {
     this.shootTimer = Math.max(0.0, this.shootTimer - t);
   }
 
-  AnimateMuzzle(t: any) {
+  AnimateMuzzle(t: number) {
     const mat = this.flash.children[0].material;
     const ratio = this.flash.life / this.fireRate;
     mat.opacity = ratio;

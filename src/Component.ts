@@ -1,3 +1,4 @@
+import type { INavEndEvent, IShootEvent } from "./interfaces/events";
 import type Entity from "./Entity";
 
 export default abstract class Component<ParentType extends Entity = Entity> {
@@ -33,7 +34,7 @@ export default abstract class Component<ParentType extends Entity = Entity> {
     return result;
   }
 
-  Broadcast(msg: any) {
+  Broadcast(msg: IShootEvent | INavEndEvent) {
     this.parent?.Broadcast(msg);
   }
 

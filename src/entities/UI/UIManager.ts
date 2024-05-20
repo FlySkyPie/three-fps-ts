@@ -8,9 +8,9 @@ export default class UIManager extends Component {
     this.name = "UIManager";
   }
 
-  SetAmmo(mag: any, rest: any) {
-    document.getElementById("current_ammo")!.innerText = mag;
-    document.getElementById("max_ammo")!.innerText = rest;
+  SetAmmo(mag: number, rest: number) {
+    document.getElementById("current_ammo")!.innerText = String(mag);
+    document.getElementById("max_ammo")!.innerText = String(rest);
   }
 
   SetHealth(health: number) {

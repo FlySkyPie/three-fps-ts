@@ -3,6 +3,7 @@ import { DecalGeometry } from "three/examples/jsm/geometries/DecalGeometry.js";
 
 import { AmmoInstance } from "../../AmmoLib";
 import Component from "../../Component";
+import { IBulletHitEvent } from "../../interfaces/events";
 
 export default class LevelBulletDecals extends Component {
   name: string;
@@ -48,7 +49,7 @@ export default class LevelBulletDecals extends Component {
     });
   }
 
-  private Hit = (e: any) => {
+  private Hit = (e: IBulletHitEvent) => {
     this.mat4.lookAt(this.position, e.hitResult.intersectionNormal, this.up);
     this.rot.setFromRotationMatrix(this.mat4);
 

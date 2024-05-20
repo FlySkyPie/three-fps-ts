@@ -1,5 +1,11 @@
 import { Vector3, Quaternion } from "three";
 
+import type {
+  IAmmoPickupEvent,
+  INavEndEvent,
+  IPlayerHitEvent,
+  IShootEvent,
+} from "./interfaces/events";
 import type Component from "./Component";
 import type EntityManager from "./EntityManager";
 
@@ -81,7 +87,9 @@ export default class Entity {
     this.eventHandlers[topic].push(handler);
   }
 
-  public Broadcast(msg: any) {
+  public Broadcast(
+    msg: IShootEvent | INavEndEvent | IAmmoPickupEvent | IPlayerHitEvent
+  ) {
     if (!this.eventHandlers.hasOwnProperty(msg.topic)) {
       return;
     }

@@ -84,7 +84,7 @@ export default class AmmoBox extends Component {
     transform.getOrigin().setValue(entityPos.x, entityPos.y, entityPos.z);
 
     if (
-      AmmoHelper.IsTriggerOverlapping(this.trigger, this.playerPhysics!.body)
+      AmmoHelper.IsTriggerOverlapping(this.trigger!, this.playerPhysics!.body!)
     ) {
       this.player?.Broadcast({ topic: "AmmoPickup" });
       this.Disable();

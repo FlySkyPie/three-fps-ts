@@ -54,8 +54,8 @@ export default class AttackTrigger extends Component {
 
   public PhysicsUpdate() {
     this.overlapping = AmmoHelper.IsTriggerOverlapping(
-      this.ghostObj,
-      this.playerPhysics!.body
+      this.ghostObj!,
+      this.playerPhysics!.body!
     );
   }
 

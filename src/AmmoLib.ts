@@ -93,7 +93,10 @@ export class AmmoHelper {
     return ghostObj;
   }
 
-  static IsTriggerOverlapping(ghostObj: any, rigidBody: any) {
+  static IsTriggerOverlapping(
+    ghostObj: Ammo.btPairCachingGhostObject,
+    rigidBody: Ammo.btRigidBody
+  ) {
     for (let i = 0; i < ghostObj.getNumOverlappingObjects(); i++) {
       // @ts-ignore The method exist, but not in type declaration.
       const body: Ammo.btRigidBody = AmmoInstance!.castObject(
@@ -109,9 +112,9 @@ export class AmmoHelper {
   }
 
   static CastRay(
-    world: any,
+    world: Ammo.btDiscreteDynamicsWorld,
     origin: any,
-    dest: any,
+    dest: THREE.Vector3,
     result: Record<string, any> = {},
     collisionFilterMask = CollisionFilterGroups.AllFilter
   ) {
