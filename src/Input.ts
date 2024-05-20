@@ -58,7 +58,7 @@ class Input {
     this._keyMap[event.code] = 0;
   };
 
-  public GetKeyDown(code: any) {
+  public GetKeyDown(code: string) {
     return this._keyMap[code] === undefined ? 0 : this._keyMap[code];
   }
 

@@ -1,11 +1,6 @@
 import { Vector3, Quaternion } from "three";
 
-import type {
-  IAmmoPickupEvent,
-  INavEndEvent,
-  IPlayerHitEvent,
-  IShootEvent,
-} from "./interfaces/events";
+import type { IEvent } from "./interfaces/events";
 import type Component from "./Component";
 import type EntityManager from "./EntityManager";
 
@@ -22,7 +17,7 @@ export default class Entity {
 
   private parent: EntityManager | null;
 
-  eventHandlers: Record<string, any[]>;
+  eventHandlers: Record<string, ((e: IEvent) => void)[]>;
 
   constructor() {
     this.name = null;
@@ -79,7 +74,7 @@ export default class Entity {
     return result as any;
   }
 
-  public RegisterEventHandler(handler: (...e: any) => void, topic: string) {
+  public RegisterEventHandler(handler: (e: IEvent) => void, topic: string) {
     if (!this.eventHandlers.hasOwnProperty(topic)) {
       this.eventHandlers[topic] = [];
     }
@@ -87,9 +82,7 @@ export default class Entity {
     this.eventHandlers[topic].push(handler);
   }
 
-  public Broadcast(
-    msg: IShootEvent | INavEndEvent | IAmmoPickupEvent | IPlayerHitEvent
-  ) {
+  public Broadcast(msg: IEvent) {
     if (!this.eventHandlers.hasOwnProperty(msg.topic)) {
       return;
     }

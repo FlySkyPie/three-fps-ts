@@ -7,10 +7,6 @@ export interface IAmmoPickupEvent {
   topic: "AmmoPickup";
 }
 
-export interface IPlayerHitEvent {
-  topic: "hit";
-}
-
 export interface IShootEvent {
   topic: "ak47_shot";
 }
@@ -32,3 +28,9 @@ export interface IBulletHitEvent {
     collisionObject?: unknown;
   };
 }
+
+export type IEvent =
+  | IShootEvent
+  | INavEndEvent
+  | IAmmoPickupEvent
+  | IBulletHitEvent;
