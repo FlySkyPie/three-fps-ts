@@ -425,6 +425,7 @@ class FPSGameApp {
     //this.debugDrawer.update();
 
     this.entityManager?.Update(elapsedTime);
+    this.entityManager?.PhysicsUpdate();
 
     this.renderer &&
       this.scene &&

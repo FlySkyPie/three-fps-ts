@@ -92,9 +92,9 @@ export default class Entity {
     }
   }
 
-  public PhysicsUpdate(world: any, timeStep: any) {
+  public PhysicsUpdate() {
     for (let k in this.components) {
-      this.components[k].PhysicsUpdate(world, timeStep);
+      this.components[k].PhysicsUpdate();
     }
   }
 

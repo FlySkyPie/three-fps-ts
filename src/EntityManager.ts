@@ -36,9 +36,9 @@ export default class EntityManager {
     }
   }
 
-  public PhysicsUpdate(world: any, timeStep: any) {
+  public PhysicsUpdate() {
     for (const entity of this.entities) {
-      entity.PhysicsUpdate(world, timeStep);
+      entity.PhysicsUpdate();
     }
   }
 
