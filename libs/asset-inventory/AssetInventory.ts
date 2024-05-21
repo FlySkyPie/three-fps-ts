@@ -12,14 +12,17 @@ export type LoadEvent = {
     key: string;
     path: string;
     total: number;
-    progress: number;
+    count: number;
 };
 
 type OnProgressHandler = (e: LoadEvent) => void;
 
 type OnCompleteedHandler = () => void;
 
-type EventName = "progress" | "complete";
+interface EventMap {
+    "progress": [e: LoadEvent];
+    "complete": [];
+};
 
 class AssetInventory {
     isLoading: boolean = false;
@@ -38,12 +41,12 @@ class AssetInventory {
 
     private onCompelteHanders: OnCompleteedHandler[] = [];
 
-    private addEventListener = (
-        name: EventName,
-        callback: (arg?: any) => void
+    private addEventListener = <K extends keyof EventMap>(
+        name: K,
+        callback: (...arg: EventMap[K]) => void
     ) => {
         if (name === "progress") {
-            this.onProgressHanders.push(callback);
+            this.onProgressHanders.push(callback as any);
             return;
         }
         if (name === "complete") {
@@ -58,8 +61,7 @@ class AssetInventory {
      */
     public get add() {
         if (this.isLoading) {
-            console.error("The inventory is busy.");
-            return;
+            throw new Error("The inventory is busy.");
         }
         return {
             texture: this.texture.addTask,
@@ -126,7 +128,7 @@ class AssetInventory {
                         key: item.key,
                         path: item.path,
                         total,
-                        progress: pool.processedCount(),
+                        count: pool.processedCount(),
                     })
                 );
 

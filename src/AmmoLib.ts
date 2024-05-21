@@ -58,12 +58,10 @@ function createConvexGeom(object: any) {
 }
 
 export class AmmoHelper {
-  public static Init(callback = () => {}) {
+  public static Init(callback = () => { }) {
     Ammo.call(this).then((ammo: typeof Ammo) => {
       AmmoInstance = ammo;
 
-      console.log(AmmoInstance);
-      console.log((AmmoInstance as any).Runtime);
       callback();
     });
   }

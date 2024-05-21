@@ -11,9 +11,6 @@ import "ammojs-typed";
 import * as THREE from "three";
 import Stats from "stats.js";
 
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils.js";
 
 import { AmmoHelper, AmmoInstance, createConvexHullShape } from "./AmmoLib";
@@ -39,18 +36,10 @@ import UIManager from "./entities/UI/UIManager";
 import AmmoBox from "./entities/AmmoBox/AmmoBox";
 import LevelBulletDecals from "./entities/Level/BulletDecals";
 import PlayerHealth from "./entities/Player/PlayerHealth";
-
-type ILoader =
-  | FBXLoader
-  | GLTFLoader
-  | OBJLoader
-  | THREE.TextureLoader
-  | THREE.AudioLoader;
+import { AssetInventory } from "../libs/asset-inventory";
 
 export class FPSGameApp {
   private lastFrameTime: number | null;
-
-  private assets: Record<string, any>;
 
   private animFrameId: number;
 
@@ -70,10 +59,13 @@ export class FPSGameApp {
 
   private entityManager?: EntityManager;
 
+  private inventory: AssetInventory;
+
   constructor() {
     this.lastFrameTime = null;
-    this.assets = {};
     this.animFrameId = 0;
+
+    this.inventory = new AssetInventory();
 
     AmmoHelper.Init(() => {
       this.Init();
@@ -81,7 +73,7 @@ export class FPSGameApp {
   }
 
   private Init() {
-    this.LoadAssets();
+    this.SetupAssets();
     this.SetupGraphics();
     this.SetupStartButton();
   }
@@ -154,26 +146,6 @@ export class FPSGameApp {
     this.mutantAnims[name] = clip;
   }
 
-  private PromiseProgress(
-    proms: Promise<void>[],
-    progress_cb: (value: number) => void
-  ) {
-    let d = 0;
-    progress_cb(0);
-    for (const p of proms) {
-      p.then(() => {
-        d++;
-        progress_cb((d / proms.length) * 100);
-      });
-    }
-    return Promise.all(proms);
-  }
-
-  private async AddAsset(name: AssetKey, loader: ILoader) {
-    const result = await loader.loadAsync(AssetUrl[name]);
-    this.assets[name] = result;
-  }
-
   private OnProgress(p: number) {
     const progressbar = document.getElementById("progress")!;
     progressbar.style.width = `${p}%`;
@@ -195,81 +167,76 @@ export class FPSGameApp {
       : "hidden";
   }
 
-  private async LoadAssets() {
-    const gltfLoader = new GLTFLoader();
-    const fbxLoader = new FBXLoader();
-    const objLoader = new OBJLoader();
-    const audioLoader = new THREE.AudioLoader();
-    const texLoader = new THREE.TextureLoader();
-    const promises = [];
-
+  private async SetupAssets() {
     //Level
-    promises.push(this.AddAsset(AssetKey.GameLevel, gltfLoader));
-    promises.push(this.AddAsset(AssetKey.NavMesh, objLoader));
+    this.inventory.add.gltf(AssetKey.GameLevel, AssetUrl[AssetKey.GameLevel]);
+    this.inventory.add.obj(AssetKey.NavMesh, AssetUrl[AssetKey.NavMesh]);
     //Mutant
-    promises.push(this.AddAsset(AssetKey.Mutant, fbxLoader));
-    promises.push(this.AddAsset(AssetKey.IdleAnim, fbxLoader));
-    promises.push(this.AddAsset(AssetKey.WalkAnim, fbxLoader));
-    promises.push(this.AddAsset(AssetKey.RunAnim, fbxLoader));
-    promises.push(this.AddAsset(AssetKey.AttackAnim, fbxLoader));
-    promises.push(this.AddAsset(AssetKey.DieAnim, fbxLoader));
+    this.inventory.add.fbx(AssetKey.Mutant, AssetUrl[AssetKey.Mutant]);
+    this.inventory.add.fbx(AssetKey.IdleAnim, AssetUrl[AssetKey.IdleAnim]);
+    this.inventory.add.fbx(AssetKey.WalkAnim, AssetUrl[AssetKey.WalkAnim]);
+    this.inventory.add.fbx(AssetKey.RunAnim, AssetUrl[AssetKey.RunAnim]);
+    this.inventory.add.fbx(AssetKey.AttackAnim, AssetUrl[AssetKey.AttackAnim]);
+    this.inventory.add.fbx(AssetKey.DieAnim, AssetUrl[AssetKey.DieAnim]);
     //AK47
-    promises.push(this.AddAsset(AssetKey.Ak47, gltfLoader));
-    promises.push(this.AddAsset(AssetKey.MuzzleFlash, gltfLoader));
-    promises.push(this.AddAsset(AssetKey.Ak47Shot, audioLoader));
+    this.inventory.add.gltf(AssetKey.Ak47, AssetUrl[AssetKey.Ak47]);
+    this.inventory.add.gltf(AssetKey.MuzzleFlash, AssetUrl[AssetKey.MuzzleFlash]);
+    this.inventory.add.audio(AssetKey.Ak47Shot, AssetUrl[AssetKey.Ak47Shot]);
     //Ammo box
-    promises.push(this.AddAsset(AssetKey.Ammobox, fbxLoader));
-    promises.push(this.AddAsset(AssetKey.AmmoboxTexD, texLoader));
-    promises.push(this.AddAsset(AssetKey.AmmoboxTexN, texLoader));
-    promises.push(this.AddAsset(AssetKey.AmmoboxTexM, texLoader));
-    promises.push(this.AddAsset(AssetKey.AmmoboxTexR, texLoader));
-    promises.push(this.AddAsset(AssetKey.AmmoboxTexAO, texLoader));
+    this.inventory.add.fbx(AssetKey.Ammobox, AssetUrl[AssetKey.Ammobox]);
+    this.inventory.add.texture(AssetKey.AmmoboxTexD, AssetUrl[AssetKey.AmmoboxTexD]);
+    this.inventory.add.texture(AssetKey.AmmoboxTexN, AssetUrl[AssetKey.AmmoboxTexN]);
+    this.inventory.add.texture(AssetKey.AmmoboxTexM, AssetUrl[AssetKey.AmmoboxTexM]);
+    this.inventory.add.texture(AssetKey.AmmoboxTexR, AssetUrl[AssetKey.AmmoboxTexR]);
+    this.inventory.add.texture(AssetKey.AmmoboxTexAO, AssetUrl[AssetKey.AmmoboxTexAO]);
     //Decal
-    promises.push(this.AddAsset(AssetKey.DecalColor, texLoader));
-    promises.push(this.AddAsset(AssetKey.DecalNormal, texLoader));
-    promises.push(this.AddAsset(AssetKey.DecalAlpha, texLoader));
+    this.inventory.add.texture(AssetKey.DecalColor, AssetUrl[AssetKey.DecalColor]);
+    this.inventory.add.texture(AssetKey.DecalNormal, AssetUrl[AssetKey.DecalNormal]);
+    this.inventory.add.texture(AssetKey.DecalAlpha, AssetUrl[AssetKey.DecalAlpha]);
 
-    promises.push(this.AddAsset(AssetKey.SkyTex, texLoader));
+    this.inventory.add.texture(AssetKey.SkyTex, AssetUrl[AssetKey.SkyTex]);
 
-    await this.PromiseProgress(promises, this.OnProgress);
+    this.inventory.load.on('progress', ({ count, total }) => {
+      const progress = count / total * 100;
 
-    this.assets[AssetKey.GameLevel] = this.assets[AssetKey.GameLevel].scene;
-    this.assets[AssetKey.MuzzleFlash] = this.assets[AssetKey.MuzzleFlash].scene;
-
-    //Extract mutant anims
-    this.mutantAnims = {};
-    this.SetAnim("idle", this.assets[AssetKey.IdleAnim]);
-    this.SetAnim("walk", this.assets[AssetKey.WalkAnim]);
-    this.SetAnim("run", this.assets[AssetKey.RunAnim]);
-    this.SetAnim("attack", this.assets[AssetKey.AttackAnim]);
-    this.SetAnim("die", this.assets[AssetKey.DieAnim]);
-
-    this.assets[AssetKey.Ak47].scene.animations =
-      this.assets[AssetKey.Ak47].animations;
-
-    //Set ammo box textures and other props
-    this.assets[AssetKey.Ammobox].scale.set(0.01, 0.01, 0.01);
-    this.assets[AssetKey.Ammobox].traverse((child: any) => {
-      child.castShadow = true;
-      child.receiveShadow = true;
-
-      child.material = new THREE.MeshStandardMaterial({
-        map: this.assets[AssetKey.AmmoboxTexD],
-        aoMap: this.assets[AssetKey.AmmoboxTexAO],
-        normalMap: this.assets[AssetKey.AmmoboxTexN],
-        metalness: 1,
-        metalnessMap: this.assets[AssetKey.AmmoboxTexM],
-        roughnessMap: this.assets[AssetKey.AmmoboxTexR],
-        color: new THREE.Color(0.4, 0.4, 0.4),
-      });
+      this.OnProgress(progress);
     });
 
-    this.assets["ammoboxShape"] = createConvexHullShape(
-      this.assets[AssetKey.Ammobox]
-    );
+    this.inventory.load.on('complete', () => {
+      //Extract mutant anims
+      this.mutantAnims = {};
+      this.SetAnim("idle", this.inventory.resource.fbx.get(AssetKey.IdleAnim));
+      this.SetAnim("walk", this.inventory.resource.fbx.get(AssetKey.WalkAnim));
+      this.SetAnim("run", this.inventory.resource.fbx.get(AssetKey.RunAnim));
+      this.SetAnim("attack", this.inventory.resource.fbx.get(AssetKey.AttackAnim));
+      this.SetAnim("die", this.inventory.resource.fbx.get(AssetKey.DieAnim));
 
-    this.HideProgress();
-    this.ShowMenu();
+      this.inventory.resource.gltf.get(AssetKey.Ak47).scene.animations =
+        this.inventory.resource.gltf.get(AssetKey.Ak47).animations;
+
+      //Set ammo box textures and other props
+      this.inventory.resource.fbx.get(AssetKey.Ammobox).scale.set(0.01, 0.01, 0.01);
+
+      this.inventory.resource.fbx.get(AssetKey.Ammobox).traverse((child) => {
+        child.castShadow = true;
+        child.receiveShadow = true;
+
+        (child as any).material = new THREE.MeshStandardMaterial({
+          map: this.inventory.resource.texture.get(AssetKey.AmmoboxTexD),
+          aoMap: this.inventory.resource.texture.get(AssetKey.AmmoboxTexAO),
+          normalMap: this.inventory.resource.texture.get(AssetKey.AmmoboxTexN),
+          metalness: 1,
+          metalnessMap: this.inventory.resource.texture.get(AssetKey.AmmoboxTexM),
+          roughnessMap: this.inventory.resource.texture.get(AssetKey.AmmoboxTexR),
+          color: new THREE.Color(0.4, 0.4, 0.4),
+        });
+      });
+
+      this.HideProgress();
+      this.ShowMenu();
+    });
+
+    await this.inventory.load.start();
   }
 
   private EntitySetup() {
@@ -279,27 +246,35 @@ export class FPSGameApp {
     levelEntity.SetName("Level");
     levelEntity.AddComponent(
       new LevelSetup(
-        this.assets[AssetKey.GameLevel],
+        // this.assets[AssetKey.GameLevel],
+        this.inventory.resource.gltf.get(AssetKey.GameLevel).scene,
         this.scene!,
         this.physicsWorld!
       )
     );
     levelEntity.AddComponent(
-      new Navmesh(this.scene!, this.assets[AssetKey.NavMesh])
+      new Navmesh(this.scene!,
+        this.inventory.resource.obj.get(AssetKey.NavMesh)
+        //  this.assets[AssetKey.NavMesh]
+      )
     );
     levelEntity.AddComponent(
       new LevelBulletDecals(
         this.scene!,
-        this.assets[AssetKey.DecalColor],
-        this.assets[AssetKey.DecalNormal],
-        this.assets[AssetKey.DecalAlpha]
+        this.inventory.resource.texture.get(AssetKey.DecalColor),
+        this.inventory.resource.texture.get(AssetKey.DecalNormal),
+        this.inventory.resource.texture.get(AssetKey.DecalAlpha),
+        // this.assets[AssetKey.DecalColor],
+        // this.assets[AssetKey.DecalNormal],
+        // this.assets[AssetKey.DecalAlpha]
       )
     );
     this.entityManager.Add(levelEntity);
 
     const skyEntity = new Entity();
     skyEntity.SetName("Sky");
-    skyEntity.AddComponent(new Sky(this.scene!, this.assets[AssetKey.SkyTex]));
+    skyEntity.AddComponent(new Sky(this.scene!,
+      this.inventory.resource.texture.get(AssetKey.SkyTex)));
     this.entityManager.Add(skyEntity);
 
     const playerEntity = new Entity();
@@ -309,10 +284,13 @@ export class FPSGameApp {
     playerEntity.AddComponent(
       new Weapon(
         this.camera!,
-        this.assets[AssetKey.Ak47].scene,
-        this.assets[AssetKey.MuzzleFlash],
+        this.inventory.resource.gltf.get(AssetKey.Ak47).scene,
+        // this.assets[AssetKey.Ak47].scene,
+        // this.assets[AssetKey.MuzzleFlash],
+        this.inventory.resource.gltf.get(AssetKey.MuzzleFlash).scene,
         this.physicsWorld!,
-        this.assets[AssetKey.Ak47Shot],
+        this.inventory.resource.audio.get(AssetKey.Ak47Shot),
+        // this.assets[AssetKey.Ak47Shot],
         this.listener!
       )
     );
@@ -334,7 +312,8 @@ export class FPSGameApp {
       npcEntity.SetName(`Mutant${i}`);
       npcEntity.AddComponent(
         new NpcCharacterController(
-          (SkeletonUtils as any).clone(this.assets[AssetKey.Mutant]),
+          (SkeletonUtils as any).clone(
+            this.inventory.resource.fbx.get(AssetKey.Mutant)),
           this.mutantAnims,
           this.scene!,
           this.physicsWorld!
@@ -362,8 +341,10 @@ export class FPSGameApp {
       box.AddComponent(
         new AmmoBox(
           this.scene!,
-          this.assets[AssetKey.Ammobox].clone(),
-          this.assets["ammoboxShape"],
+          this.inventory.resource.fbx.get(AssetKey.Ammobox).clone(),
+          createConvexHullShape(
+            this.inventory.resource.fbx.get(AssetKey.Ammobox)
+          ),
           this.physicsWorld!
         )
       );
