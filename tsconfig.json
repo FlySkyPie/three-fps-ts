@@ -26,5 +26,5 @@
 
     "typeRoots": ["node_modules/ammojs-typed/ammo/ambient"]
   },
-  "include": ["src"]
+  "include": ["src", "libs"]
 }

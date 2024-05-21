@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@supercharge/promise-pool':
+        specifier: ^2.2.0
+        version: 2.4.0
       stats.js:
         specifier: ^0.17.0
         version: 0.17.0
@@ -254,6 +257,10 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@supercharge/promise-pool@2.4.0':
+    resolution: {integrity: sha512-O9CMipBlq5OObdt1uKJGIzm9cdjpPWfj+a+Zw9EgWKxaMNHKC7EU7X9taj3H0EGQNLOSq2jAcOa3EzxlfHsD6w==}
+    engines: {node: '>=8'}
+
   '@tweenjs/tween.js@23.1.2':
     resolution: {integrity: sha512-kMCNaZCJugWI86xiEHaY338CU5JpD0B97p1j1IKNn/Zto8PgACjQx0UxbHjmOcLl/dDOBnItwD07KmCs75pxtQ==}
 
@@ -471,6 +478,8 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.17.2':
     optional: true
+
+  '@supercharge/promise-pool@2.4.0': {}
 
   '@tweenjs/tween.js@23.1.2': {}
 
