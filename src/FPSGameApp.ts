@@ -47,28 +47,28 @@ type ILoader =
   | THREE.TextureLoader
   | THREE.AudioLoader;
 
-class FPSGameApp {
-  lastFrameTime: number | null;
+export class FPSGameApp {
+  private lastFrameTime: number | null;
 
-  assets: Record<string, any>;
+  private assets: Record<string, any>;
 
-  animFrameId: number;
+  private animFrameId: number;
 
-  scene?: THREE.Scene;
+  private scene?: THREE.Scene;
 
-  renderer?: THREE.WebGLRenderer;
+  private renderer?: THREE.WebGLRenderer;
 
-  stats?: Stats;
+  private stats?: Stats;
 
-  camera?: THREE.PerspectiveCamera;
+  private camera?: THREE.PerspectiveCamera;
 
-  listener?: THREE.AudioListener;
+  private listener?: THREE.AudioListener;
 
-  physicsWorld?: Ammo.btDiscreteDynamicsWorld;
+  private physicsWorld?: Ammo.btDiscreteDynamicsWorld;
 
-  mutantAnims: Record<any, any> = {};
+  private mutantAnims: Record<any, any> = {};
 
-  entityManager?: EntityManager;
+  private entityManager?: EntityManager;
 
   constructor() {
     this.lastFrameTime = null;
@@ -433,9 +433,4 @@ class FPSGameApp {
       this.renderer.render(this.scene, this.camera);
     this.stats?.update();
   }
-}
-
-let _APP = null;
-window.addEventListener("DOMContentLoaded", () => {
-  _APP = new FPSGameApp();
-});
+};
