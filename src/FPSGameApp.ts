@@ -13,6 +13,8 @@ import Stats from "stats.js";
 
 import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils.js";
 
+import { AssetInventory } from "../libs/asset-inventory";
+
 import { AmmoHelper, AmmoInstance, createConvexHullShape } from "./AmmoLib";
 import EntityManager from "./EntityManager";
 import Entity from "./Entity";
@@ -25,7 +27,6 @@ import NpcCharacterController from "./entities/NPC/CharacterController";
 import Input from "./Input";
 
 import { AssetKey } from "./constants/asset-key";
-import { AssetUrl } from "./constants/asset-url";
 
 import Navmesh from "./entities/Level/Navmesh";
 import AttackTrigger from "./entities/NPC/AttackTrigger";
@@ -36,7 +37,7 @@ import UIManager from "./entities/UI/UIManager";
 import AmmoBox from "./entities/AmmoBox/AmmoBox";
 import LevelBulletDecals from "./entities/Level/BulletDecals";
 import PlayerHealth from "./entities/Player/PlayerHealth";
-import { AssetInventory } from "../libs/asset-inventory";
+import { Preloader } from "./Preloader";
 
 export class FPSGameApp {
   private lastFrameTime: number | null;
@@ -55,25 +56,26 @@ export class FPSGameApp {
 
   private physicsWorld?: Ammo.btDiscreteDynamicsWorld;
 
-  private mutantAnims: Record<any, any> = {};
-
   private entityManager?: EntityManager;
 
   private inventory: AssetInventory;
+
+  private preloader: Preloader;
 
   constructor() {
     this.lastFrameTime = null;
     this.animFrameId = 0;
 
     this.inventory = new AssetInventory();
+    this.preloader = new Preloader(this.inventory);
 
-    AmmoHelper.Init(() => {
+    AmmoHelper.InitPromise().then(() => {
       this.Init();
     });
   }
 
   private Init() {
-    this.SetupAssets();
+    this.preloader.SetupAssets();
     this.SetupGraphics();
     this.SetupStartButton();
   }
@@ -141,102 +143,10 @@ export class FPSGameApp {
     //this.debugDrawer.enable();
   }
 
-  private SetAnim(name: string, obj: any) {
-    const clip = obj.animations[0];
-    this.mutantAnims[name] = clip;
-  }
-
-  private OnProgress(p: number) {
-    const progressbar = document.getElementById("progress")!;
-    progressbar.style.width = `${p}%`;
-  }
-
-  private HideProgress() {
-    this.OnProgress(0);
-  }
-
   private SetupStartButton() {
     document
       .getElementById("start_game")!
       .addEventListener("click", this.StartGame);
-  }
-
-  private ShowMenu(visible = true) {
-    document.getElementById("menu")!.style.visibility = visible
-      ? "visible"
-      : "hidden";
-  }
-
-  private async SetupAssets() {
-    //Level
-    this.inventory.add.gltf(AssetKey.GameLevel, AssetUrl[AssetKey.GameLevel]);
-    this.inventory.add.obj(AssetKey.NavMesh, AssetUrl[AssetKey.NavMesh]);
-    //Mutant
-    this.inventory.add.fbx(AssetKey.Mutant, AssetUrl[AssetKey.Mutant]);
-    this.inventory.add.fbx(AssetKey.IdleAnim, AssetUrl[AssetKey.IdleAnim]);
-    this.inventory.add.fbx(AssetKey.WalkAnim, AssetUrl[AssetKey.WalkAnim]);
-    this.inventory.add.fbx(AssetKey.RunAnim, AssetUrl[AssetKey.RunAnim]);
-    this.inventory.add.fbx(AssetKey.AttackAnim, AssetUrl[AssetKey.AttackAnim]);
-    this.inventory.add.fbx(AssetKey.DieAnim, AssetUrl[AssetKey.DieAnim]);
-    //AK47
-    this.inventory.add.gltf(AssetKey.Ak47, AssetUrl[AssetKey.Ak47]);
-    this.inventory.add.gltf(AssetKey.MuzzleFlash, AssetUrl[AssetKey.MuzzleFlash]);
-    this.inventory.add.audio(AssetKey.Ak47Shot, AssetUrl[AssetKey.Ak47Shot]);
-    //Ammo box
-    this.inventory.add.fbx(AssetKey.Ammobox, AssetUrl[AssetKey.Ammobox]);
-    this.inventory.add.texture(AssetKey.AmmoboxTexD, AssetUrl[AssetKey.AmmoboxTexD]);
-    this.inventory.add.texture(AssetKey.AmmoboxTexN, AssetUrl[AssetKey.AmmoboxTexN]);
-    this.inventory.add.texture(AssetKey.AmmoboxTexM, AssetUrl[AssetKey.AmmoboxTexM]);
-    this.inventory.add.texture(AssetKey.AmmoboxTexR, AssetUrl[AssetKey.AmmoboxTexR]);
-    this.inventory.add.texture(AssetKey.AmmoboxTexAO, AssetUrl[AssetKey.AmmoboxTexAO]);
-    //Decal
-    this.inventory.add.texture(AssetKey.DecalColor, AssetUrl[AssetKey.DecalColor]);
-    this.inventory.add.texture(AssetKey.DecalNormal, AssetUrl[AssetKey.DecalNormal]);
-    this.inventory.add.texture(AssetKey.DecalAlpha, AssetUrl[AssetKey.DecalAlpha]);
-
-    this.inventory.add.texture(AssetKey.SkyTex, AssetUrl[AssetKey.SkyTex]);
-
-    this.inventory.load.on('progress', ({ count, total }) => {
-      const progress = count / total * 100;
-
-      this.OnProgress(progress);
-    });
-
-    this.inventory.load.on('complete', () => {
-      //Extract mutant anims
-      this.mutantAnims = {};
-      this.SetAnim("idle", this.inventory.resource.fbx.get(AssetKey.IdleAnim));
-      this.SetAnim("walk", this.inventory.resource.fbx.get(AssetKey.WalkAnim));
-      this.SetAnim("run", this.inventory.resource.fbx.get(AssetKey.RunAnim));
-      this.SetAnim("attack", this.inventory.resource.fbx.get(AssetKey.AttackAnim));
-      this.SetAnim("die", this.inventory.resource.fbx.get(AssetKey.DieAnim));
-
-      this.inventory.resource.gltf.get(AssetKey.Ak47).scene.animations =
-        this.inventory.resource.gltf.get(AssetKey.Ak47).animations;
-
-      //Set ammo box textures and other props
-      this.inventory.resource.fbx.get(AssetKey.Ammobox).scale.set(0.01, 0.01, 0.01);
-
-      this.inventory.resource.fbx.get(AssetKey.Ammobox).traverse((child) => {
-        child.castShadow = true;
-        child.receiveShadow = true;
-
-        (child as any).material = new THREE.MeshStandardMaterial({
-          map: this.inventory.resource.texture.get(AssetKey.AmmoboxTexD),
-          aoMap: this.inventory.resource.texture.get(AssetKey.AmmoboxTexAO),
-          normalMap: this.inventory.resource.texture.get(AssetKey.AmmoboxTexN),
-          metalness: 1,
-          metalnessMap: this.inventory.resource.texture.get(AssetKey.AmmoboxTexM),
-          roughnessMap: this.inventory.resource.texture.get(AssetKey.AmmoboxTexR),
-          color: new THREE.Color(0.4, 0.4, 0.4),
-        });
-      });
-
-      this.HideProgress();
-      this.ShowMenu();
-    });
-
-    await this.inventory.load.start();
   }
 
   private EntitySetup() {
@@ -314,7 +224,7 @@ export class FPSGameApp {
         new NpcCharacterController(
           (SkeletonUtils as any).clone(
             this.inventory.resource.fbx.get(AssetKey.Mutant)),
-          this.mutantAnims,
+          this.preloader.mutantAnims,
           this.scene!,
           this.physicsWorld!
         )
@@ -368,7 +278,7 @@ export class FPSGameApp {
     this.scene?.clear();
     this.SetupPhysics();
     this.EntitySetup();
-    this.ShowMenu(false);
+    document.getElementById("menu")!.style.visibility = 'hidden'
   };
 
   // resize

@@ -66,6 +66,16 @@ export class AmmoHelper {
     });
   }
 
+  public static InitPromise() {
+    return new Promise<void>((resove) => {
+      Ammo.call(this).then((ammo: typeof Ammo) => {
+        AmmoInstance = ammo;
+
+        resove();
+      });
+    })
+  }
+
   public static CreateTrigger(shape: any, position?: any, rotation?: any) {
     const transform = new AmmoInstance!.btTransform();
     transform.setIdentity();
